@@ -41,4 +41,10 @@ export const DEFAULT_COLORS = [
   "#F97316", // Orange
 ];
 
-export const DEFAULT_SOUNDS = ["default", "bell", "chime", "alarm"];
+export const DEFAULT_SOUNDS = [
+  "default.mp3",
+  "bell.mp3",
+  "chime.mp3",
+  "alarm.mp3",
+  "notification.mp3",
+];

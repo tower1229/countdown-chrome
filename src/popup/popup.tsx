@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import ReactDOM from "react-dom/client";
 import "../utils/index.css";
 import "../utils/global.css";
@@ -39,6 +39,13 @@ const Popup: React.FC = () => {
   const [isCreatingNew, setIsCreatingNew] = useState<boolean>(false);
 
   const [isCountingDown, setIsCountingDown] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  // 重置popup高度
+  const resetPopupHeight = useCallback(() => {
+    document.documentElement.style.height = "";
+    document.body.style.height = "";
+  }, []);
 
   // 加载应用状态和定时器列表
   useEffect(() => {
@@ -96,6 +103,19 @@ const Popup: React.FC = () => {
 
     loadData();
   }, []);
+
+  // 监视倒计时状态变化
+  useEffect(() => {
+    if (!isCountingDown) {
+      // 当倒计时结束或取消时重置高度
+      resetPopupHeight();
+
+      // 一个小延时，确保高度在DOM更新后重新计算
+      setTimeout(() => {
+        resetPopupHeight();
+      }, 50);
+    }
+  }, [isCountingDown, resetPopupHeight]);
 
   // 更新应用状态
   const updateAppState = useCallback(async (newState: Partial<AppState>) => {
@@ -232,8 +252,10 @@ const Popup: React.FC = () => {
         editingTimer: timer,
         isCreatingNew: false,
       });
+      // 当路由更改时重置高度
+      resetPopupHeight();
     },
-    [updateAppState]
+    [updateAppState, resetPopupHeight]
   );
 
   // 创建新定时器
@@ -246,7 +268,9 @@ const Popup: React.FC = () => {
       editingTimer: null,
       isCreatingNew: true,
     });
-  }, [updateAppState]);
+    // 当路由更改时重置高度
+    resetPopupHeight();
+  }, [updateAppState, resetPopupHeight]);
 
   // 处理保存定时器
   const handleSaveTimer = useCallback(
@@ -261,11 +285,13 @@ const Popup: React.FC = () => {
           editingTimer: null,
           isCreatingNew: false,
         });
+        // 当保存并返回列表时重置高度
+        resetPopupHeight();
       } catch (error) {
         console.error("保存定时器失败:", error);
       }
     },
-    [updateAppState]
+    [updateAppState, resetPopupHeight]
   );
 
   // 重新排序定时器
@@ -282,7 +308,9 @@ const Popup: React.FC = () => {
   const handleGoBack = useCallback(() => {
     setCurrentRoute("timer-list");
     updateAppState({ route: "timer-list" });
-  }, []);
+    // 当返回列表时重置高度
+    resetPopupHeight();
+  }, [updateAppState, resetPopupHeight]);
 
   useEffect(() => {
     // 初始获取倒计时状态
@@ -299,8 +327,16 @@ const Popup: React.FC = () => {
     return () => chrome.runtime.onMessage.removeListener(handleMessage);
   }, []);
 
+  // 添加路由变化时重置高度的逻辑
+  useEffect(() => {
+    resetPopupHeight();
+  }, [currentRoute, resetPopupHeight]);
+
   return (
-    <div className="flex flex-col mx-auto min-h-screen px-0 pb-2 w-80">
+    <div
+      ref={rootRef}
+      className="flex flex-col mx-auto min-h-screen px-0 pb-2 w-80"
+    >
       {!isLoading && (
         <div className="flex-grow">
           {isCountingDown ? (

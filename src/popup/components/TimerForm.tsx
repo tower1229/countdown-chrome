@@ -225,7 +225,7 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
                 }`}
                 aria-label={`声音: ${soundOption}`}
               >
-                {soundOption.replace(".mp3", "")}
+                {soundOption.split(".")[0]}
               </button>
               <button
                 type="button"
