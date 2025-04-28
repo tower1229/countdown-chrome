@@ -68,6 +68,20 @@ const completeTimer = async () => {
     // 发送消息给popup
     chrome.runtime.sendMessage({ type: "TIMER_COMPLETED" });
 
+    // 向所有打开的标签页发送播放声音的消息
+    chrome.tabs.query({}, (tabs) => {
+      for (const tab of tabs) {
+        if (tab.id) {
+          chrome.tabs.sendMessage(tab.id, { type: "PLAY_SOUND" }, () => {
+            // 忽略错误，chrome.runtime.lastError 会自动处理
+            if (chrome.runtime.lastError) {
+              // 消息发送失败，但这是正常的 - 有些标签页可能无法接收消息
+            }
+          });
+        }
+      }
+    });
+
     // 播放通知声音
     playNotificationSound();
 

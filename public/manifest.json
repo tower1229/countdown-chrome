@@ -23,7 +23,18 @@
     "permissions": [
         "storage",
         "alarms",
-        "notifications"
+        "notifications",
+        "tabs"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "src/content/playSound.ts"
+            ]
+        }
     ],
     "web_accessible_resources": [
         {

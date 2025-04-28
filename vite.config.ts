@@ -20,6 +20,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         popup: "src/popup/popup.html",
+        playSound: "src/content/playSound.ts",
       },
     },
   },
