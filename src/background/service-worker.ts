@@ -14,6 +14,8 @@ import {
 // 更新图标和发送消息的间隔
 const UPDATE_INTERVAL = 1000; // 1秒
 
+let isCountingDown = false;
+
 // 计时器更新函数
 const updateTimer = async () => {
   try {
@@ -21,9 +23,20 @@ const updateTimer = async () => {
 
     if (!state || !state.isRunning) {
       // 没有运行中的倒计时，确保恢复默认图标
+      isCountingDown = false;
+      chrome.runtime.sendMessage({
+        type: "COUNTDOWN_STATUS_CHANGED",
+        isCountingDown: false,
+      });
       await restoreDefaultIcon();
       return;
     }
+
+    isCountingDown = true;
+    chrome.runtime.sendMessage({
+      type: "COUNTDOWN_STATUS_CHANGED",
+      isCountingDown: true,
+    });
 
     const now = Date.now();
     const remainingTime = state.endTime - now;
@@ -112,6 +125,10 @@ const showNotification = (title: string, message: string) => {
 // 处理消息
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   try {
+    if (message.type === "GET_COUNTDOWN_STATUS") {
+      sendResponse({ isCountingDown });
+      return true;
+    }
     if (message.type === "START_TIMER") {
       // 保存计时器状态
       const timerState: TimerState = {
