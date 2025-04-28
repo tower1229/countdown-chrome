@@ -3,6 +3,8 @@ import React from "react";
 interface CountdownViewProps {
   remainingTime: number;
   onCancel: () => void;
+  color?: string;
+  totalTime?: number;
 }
 
 const formatTime = (ms: number) => {
@@ -18,7 +20,16 @@ const formatTime = (ms: number) => {
 const CountdownView: React.FC<CountdownViewProps> = ({
   remainingTime,
   onCancel,
+  color = "#3B82F6",
+  totalTime,
 }) => {
+  const actualTotalTime = totalTime || remainingTime;
+
+  const progressPercentage = Math.min(
+    100,
+    Math.max(0, (remainingTime / actualTotalTime) * 100)
+  );
+
   return (
     <div
       className="flex flex-col w-full p-6 items-center justify-center"
@@ -27,16 +38,22 @@ const CountdownView: React.FC<CountdownViewProps> = ({
       role="region"
     >
       <h2 className="font-medium text-lg mb-2 text-gray-600">正在倒计时</h2>
-      <div className="font-bold mb-8 text-5xl text-blue-600" aria-live="polite">
+      <div
+        className="font-bold mb-8 text-5xl"
+        style={{ color }}
+        aria-live="polite"
+      >
         {formatTime(remainingTime)}
       </div>
-      <div className="rounded-full max-w-xs bg-blue-100 h-4 mb-8 w-full">
+      <div
+        className="rounded-full max-w-xs h-4 mb-8 w-full"
+        style={{ backgroundColor: `${color}15` }}
+      >
         <div
-          className="rounded-full bg-blue-500 h-4 transition-all ease-linear duration-1000"
+          className="rounded-full h-4 transition-all ease-linear duration-1000"
           style={{
-            width: `${
-              (remainingTime / (Math.ceil(remainingTime / 1000) * 1000)) * 100
-            }%`,
+            backgroundColor: color,
+            width: `${progressPercentage}%`,
           }}
         ></div>
       </div>
