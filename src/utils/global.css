@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #358b5f;
+}
+
+/* 容器样式 */
+.container {
+  @apply w-full p-4;
+}
+
+/* 页面标题样式 */
+.page-title {
+  @apply font-bold text-center text-xl;
+}
+
+/* 定时器表单 */
+.timer-form-container {
+  @apply space-y-6 p-4;
+}
+
+/* 定时器列表 */
+.timer-list-container {
+  @apply space-y-4 p-4;
+}

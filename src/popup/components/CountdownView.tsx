@@ -19,20 +19,29 @@ const CountdownView: React.FC<CountdownViewProps> = ({
   remainingTime,
   onCancel,
 }) => {
-  // TODO: 这里可集成 context 或 props 获取剩余时间和取消方法
-  // 这里只做静态展示，后续可集成实际倒计时逻辑
   return (
     <div
-      className="flex flex-col items-center justify-center h-full bg-white p-4 w-80"
+      className="flex flex-col w-full p-6 items-center justify-center"
       tabIndex={0}
       aria-label="倒计时进行中"
       role="region"
     >
-      <span className="text-4xl font-bold text-primary mb-4" aria-live="polite">
+      <h2 className="font-medium text-lg mb-2 text-gray-600">正在倒计时</h2>
+      <div className="font-bold mb-8 text-5xl text-blue-600" aria-live="polite">
         {formatTime(remainingTime)}
-      </span>
+      </div>
+      <div className="rounded-full max-w-xs bg-blue-100 h-4 mb-8 w-full">
+        <div
+          className="rounded-full bg-blue-500 h-4 transition-all ease-linear duration-1000"
+          style={{
+            width: `${
+              (remainingTime / (Math.ceil(remainingTime / 1000) * 1000)) * 100
+            }%`,
+          }}
+        ></div>
+      </div>
       <button
-        className="px-4 py-2 bg-red-500 text-white rounded shadow hover:bg-red-600 focus:outline-none"
+        className="btn btn-error"
         onClick={onCancel}
         tabIndex={0}
         aria-label="取消倒计时"

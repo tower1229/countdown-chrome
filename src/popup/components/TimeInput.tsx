@@ -8,6 +8,7 @@ type TimeInputProps = {
   label: string;
   ariaLabel: string;
   id: string;
+  className?: string;
 };
 
 const TimeInput: React.FC<TimeInputProps> = ({
@@ -18,6 +19,7 @@ const TimeInput: React.FC<TimeInputProps> = ({
   label,
   ariaLabel,
   id,
+  className = "",
 }) => {
   const [inputValue, setInputValue] = useState<string>(String(value));
 
@@ -49,15 +51,17 @@ const TimeInput: React.FC<TimeInputProps> = ({
 
   return (
     <div className="flex flex-col items-center">
-      <label className="text-sm mb-1" htmlFor={id}>
-        {label}
-      </label>
+      {label && (
+        <label className="text-sm mb-1" htmlFor={id}>
+          {label}
+        </label>
+      )}
       <input
         id={id}
         type="text"
         inputMode="numeric"
         pattern="[0-9]*"
-        className="w-12 text-center border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className={`w-14 h-10 text-center text-xl font-medium border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 ${className}`}
         value={inputValue}
         onChange={handleInputChange}
         onBlur={handleInputBlur}

@@ -21,7 +21,7 @@ const updateTimer = async () => {
   try {
     const state = await getTimerState();
 
-    if (!state || !state.isRunning) {
+    if (!state || !state.isCountingDown) {
       // 没有运行中的倒计时，确保恢复默认图标
       isCountingDown = false;
       chrome.runtime.sendMessage({
@@ -132,7 +132,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (message.type === "START_TIMER") {
       // 保存计时器状态
       const timerState: TimerState = {
-        isRunning: true,
+        isCountingDown: true,
         endTime: message.endTime,
         totalSeconds: message.totalSeconds,
         currentTimerId: message.currentTimerId, // 保存当前定时器ID

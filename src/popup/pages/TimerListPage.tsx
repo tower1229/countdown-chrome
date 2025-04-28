@@ -9,7 +9,7 @@ interface TimerListPageProps {
   onEditTimer: (timer: CustomTimer) => void;
   onDeleteTimer: (id: string) => void;
   onReorderTimers: (newOrder: CustomTimer[]) => void;
-  isRunning: boolean;
+  isCountingDown: boolean;
   onCancel: () => void;
   remainingTime: number;
 }
@@ -21,7 +21,7 @@ const TimerListPage: React.FC<TimerListPageProps> = ({
   onEditTimer,
   onDeleteTimer,
   onReorderTimers,
-  isRunning,
+  isCountingDown,
   onCancel,
   remainingTime,
 }) => {
@@ -41,17 +41,17 @@ const TimerListPage: React.FC<TimerListPageProps> = ({
   };
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-bold text-center">Tab Countdown Timer</h1>
+    <div className="timer-list-container">
+      <div className="flex mb-6 justify-between items-center">
+        <h1 className="page-title">Tab Countdown Timer</h1>
         <button
           onClick={onCreateTimer}
-          className="p-1.5 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="btn btn-sm btn-square btn-primary"
           aria-label="新建定时器"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
+            className="h-6 w-6"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -64,18 +64,18 @@ const TimerListPage: React.FC<TimerListPageProps> = ({
         </button>
       </div>
 
-      {isRunning && (
-        <div className="bg-blue-50 p-3 rounded-md mb-4">
+      {isCountingDown && (
+        <div className="rounded-lg bg-blue-50 shadow-sm mb-4 p-4">
           <div className="flex justify-between items-center">
             <div>
-              <div className="text-sm text-blue-600 font-medium">正在计时:</div>
-              <div className="text-lg font-bold">
+              <div className="font-medium text-sm text-blue-600">正在计时:</div>
+              <div className="font-bold text-lg">
                 {formatRemainingTime(remainingTime)}
               </div>
             </div>
             <button
               onClick={onCancel}
-              className="px-3 py-1 bg-red-500 text-white text-sm rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="bg-red-500 btn btn-primary hover:bg-red-600"
               aria-label="取消计时"
             >
               取消

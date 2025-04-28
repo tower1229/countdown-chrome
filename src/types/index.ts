@@ -1,5 +1,5 @@
 export interface TimerState {
-  isRunning: boolean;
+  isCountingDown: boolean;
   endTime: number;
   totalSeconds: number;
   currentTimerId?: string; // Reference to the current running timer ID

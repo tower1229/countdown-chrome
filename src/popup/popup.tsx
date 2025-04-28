@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ReactDOM from "react-dom/client";
 import "../utils/index.css";
+import "../utils/global.css";
 import { TimerState, CustomTimer, AppState, Route } from "../types";
 import { calculateTotalSeconds } from "../utils/timer";
 import {
@@ -24,7 +25,6 @@ const Popup: React.FC = () => {
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
-  const [isRunning, setIsRunning] = useState<boolean>(false);
   const [remainingTime, setRemainingTime] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -55,8 +55,8 @@ const Popup: React.FC = () => {
         // 获取当前倒计时状态
         chrome.storage.local.get(["timerState"], (result) => {
           const state = result.timerState as TimerState | undefined;
-          if (state && state.isRunning) {
-            setIsRunning(true);
+          if (state && state.isCountingDown) {
+            setIsCountingDown(true);
             setRemainingTime(state.endTime - Date.now());
 
             // 如果有当前计时器ID，查找并显示相关信息
@@ -110,13 +110,13 @@ const Popup: React.FC = () => {
       if (message.type === "TIMER_UPDATE") {
         setRemainingTime(message.remainingTime);
       } else if (message.type === "TIMER_COMPLETED") {
-        setIsRunning(false);
+        setIsCountingDown(false);
         // 在popup中也尝试播放声音
         playNotificationSound(DEFAULT_NOTIFICATION_SOUND).catch(() => {
           // 忽略错误
         });
       } else if (message.type === "TIMER_CANCELLED") {
-        setIsRunning(false);
+        setIsCountingDown(false);
       }
     };
 
@@ -129,14 +129,14 @@ const Popup: React.FC = () => {
 
   // 更新显示的剩余时间
   useEffect(() => {
-    if (isRunning) {
+    if (isCountingDown) {
       const interval = setInterval(() => {
         chrome.storage.local.get(["timerState"], (result) => {
           const state = result.timerState as TimerState | undefined;
-          if (state && state.isRunning) {
+          if (state && state.isCountingDown) {
             setRemainingTime(state.endTime - Date.now());
           } else {
-            setIsRunning(false);
+            setIsCountingDown(false);
             clearInterval(interval);
           }
         });
@@ -144,7 +144,7 @@ const Popup: React.FC = () => {
 
       return () => clearInterval(interval);
     }
-  }, [isRunning]);
+  }, [isCountingDown]);
 
   // 开始计时
   const handleStart = useCallback(
@@ -189,7 +189,7 @@ const Popup: React.FC = () => {
         sound: customTimer?.sound || DEFAULT_NOTIFICATION_SOUND,
       });
 
-      setIsRunning(true);
+      setIsCountingDown(true);
       setRemainingTime(totalSeconds * 1000);
     },
     [hours, minutes, seconds]
@@ -198,7 +198,7 @@ const Popup: React.FC = () => {
   // 取消计时
   const handleCancel = useCallback(() => {
     chrome.runtime.sendMessage({ type: "CANCEL_TIMER" });
-    setIsRunning(false);
+    setIsCountingDown(false);
   }, []);
 
   // 删除定时器
@@ -294,46 +294,41 @@ const Popup: React.FC = () => {
     return () => chrome.runtime.onMessage.removeListener(handleMessage);
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="bg-white flex h-32 p-4 w-80 items-center justify-center">
-        <div className="text-center">
-          <div className="rounded-full mx-auto border-b-2 border-blue-500 h-8 animate-spin w-8"></div>
-          <p className="mt-2 text-gray-600">加载中...</p>
+  return (
+    <div className="container">
+      {isLoading ? (
+        <div className="flex h-48 justify-center items-center">
+          <div className="rounded-full border-t-2 border-b-2 border-blue-500 h-10 animate-spin w-10"></div>
         </div>
-      </div>
-    );
-  }
-
-  // 根据路由状态显示不同的页面
-  if (isCountingDown) {
-    return (
-      <CountdownView remainingTime={remainingTime} onCancel={handleCancel} />
-    );
-  } else if (currentRoute === "timer-edit") {
-    return (
-      <TimerEditPage
-        timer={editingTimer}
-        onSave={handleSaveTimer}
-        onCancel={handleCancelEdit}
-        isCreatingNew={isCreatingNew}
-      />
-    );
-  } else {
-    return (
-      <TimerListPage
-        timers={timers}
-        onCreateTimer={handleCreateTimer}
-        onStartTimer={handleStart}
-        onEditTimer={handleEditTimer}
-        onDeleteTimer={handleDeleteTimer}
-        onReorderTimers={handleReorderTimers}
-        isRunning={isRunning}
-        onCancel={handleCancel}
-        remainingTime={remainingTime}
-      />
-    );
-  }
+      ) : isCountingDown ? (
+        <CountdownView remainingTime={remainingTime} onCancel={handleCancel} />
+      ) : (
+        <>
+          {currentRoute === "timer-list" && (
+            <TimerListPage
+              timers={timers}
+              onStartTimer={handleStart}
+              onEditTimer={handleEditTimer}
+              onDeleteTimer={handleDeleteTimer}
+              onCreateTimer={handleCreateTimer}
+              onReorderTimers={handleReorderTimers}
+              isCountingDown={isCountingDown}
+              onCancel={handleCancel}
+              remainingTime={remainingTime}
+            />
+          )}
+          {currentRoute === "timer-edit" && (
+            <TimerEditPage
+              timer={editingTimer}
+              isCreatingNew={isCreatingNew}
+              onSave={handleSaveTimer}
+              onCancel={handleCancelEdit}
+            />
+          )}
+        </>
+      )}
+    </div>
+  );
 };
 
 const root = ReactDOM.createRoot(

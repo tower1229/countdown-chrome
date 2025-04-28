@@ -23,26 +23,27 @@ const TimerItem: React.FC<TimerItemProps> = ({
 
   return (
     <div
-      className={`flex items-center justify-between p-3 rounded-lg border-2 shadow-sm transition-all ${
+      className={`flex items-center justify-between p-4 rounded-xl border shadow-sm transition-all ${
         isDragging ? "opacity-50" : "opacity-100"
       }`}
       style={{
         borderColor: color || "#3b82f6",
-        backgroundColor: `${color}10` || "#3b82f680",
+        backgroundColor: `${color}15` || "#3b82f610",
       }}
     >
       <div className="cursor-grab flex flex-1 items-center">
         <div className="mr-3 text-gray-400">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
+            className="grip-icon"
           >
             <circle cx="8" cy="8" r="1" />
             <circle cx="8" cy="16" r="1" />
@@ -51,13 +52,15 @@ const TimerItem: React.FC<TimerItemProps> = ({
           </svg>
         </div>
         <div className="flex-1">
-          <div className="text-sm text-gray-500">{duration}</div>
+          <div className="font-medium text-base" style={{ color }}>
+            {duration}
+          </div>
         </div>
       </div>
-      <div className="flex space-x-2 items-center">
+      <div className="flex space-x-3 items-center">
         <button
           onClick={() => onStart(timer)}
-          className="rounded-full p-2 text-green-600 hover:bg-green-100"
+          className="rounded-full text-success p-2.5 transition-colors hover:bg-green-100"
           aria-label="启动定时器"
         >
           <svg
@@ -76,7 +79,7 @@ const TimerItem: React.FC<TimerItemProps> = ({
         </button>
         <button
           onClick={() => onEdit(timer)}
-          className="rounded-full p-2 text-blue-600 hover:bg-blue-100"
+          className="rounded-full text-info p-2.5 transition-colors hover:bg-blue-100"
           aria-label="编辑定时器"
         >
           <svg
@@ -96,7 +99,7 @@ const TimerItem: React.FC<TimerItemProps> = ({
         </button>
         <button
           onClick={() => onDelete(timer.id)}
-          className="rounded-full p-2 text-red-600 hover:bg-red-100"
+          className="rounded-full text-error p-2.5 transition-colors hover:bg-red-100"
           aria-label="删除定时器"
         >
           <svg
