@@ -1,53 +1,53 @@
-# New Countdown Timer - Chrome 商店描述
+# New Countdown Timer - Chrome Store Description
 
-## 简短描述（最多 132 字符）
+## Short Description (up to 132 characters)
 
-简单易用的倒计时工具，在浏览器工具栏显示剩余时间，并在时间结束时通知提醒你。
+A simple and easy-to-use countdown timer that shows remaining time in the browser toolbar and notifies you when time is up.
 
-## 详细描述（最多 16,000 字符）
+## Detailed Description (up to 16,000 characters)
 
-**New Countdown Timer - 专注时间管理的 Chrome 扩展**
+**New Countdown Timer - A Chrome Extension for Focused Time Management**
 
-New Countdown Timer 是一款简单而强大的 Chrome 浏览器倒计时工具，帮助你更有效地管理时间。无论是控制学习时间、烹饪时间提醒，还是管理会议时长，这个轻量级扩展都能满足你的需求。
+New Countdown Timer is a simple yet powerful Chrome countdown tool that helps you manage your time more effectively. Whether you need to control study sessions, set cooking reminders, or manage meeting durations, this lightweight extension has you covered.
 
-### 主要功能
+### Key Features
 
-- **简单设置**：轻松设置小时、分钟和秒数
-- **实时显示**：倒计时在浏览器工具栏上动态更新，让你无需切换标签页即可查看剩余时间
-- **灵活控制**：随时启动或取消倒计时
-- **即时通知**：倒计时结束时通过桌面通知和声音提醒你
-- **记忆设置**：自动保存上次使用的时间设置，提高效率
+- **Easy Setup**: Quickly set hours, minutes, and seconds
+- **Real-Time Display**: Countdown dynamically updates in the browser toolbar, so you can check the remaining time without switching tabs
+- **Flexible Control**: Start or cancel the countdown at any time
+- **Instant Notifications**: Get desktop notifications and sound alerts when the countdown ends
+- **Memory Recall**: Automatically saves your last used timer settings for greater efficiency
 
-### 使用场景
+### Use Cases
 
-- **🎯 专注工作**：设置 25 分钟的"番茄钟"工作法
-- **⏱️ 控制会议时间**：避免会议超时
-- **🍳 厨房计时器**：烹饪或烘焙时的完美助手
-- **💻 限制屏幕时间**：帮助控制孩子的上网时间
-- **🏋️ 运动计时**：健身锻炼间隔计时
+- **🎯 Stay Focused at Work**: Set a 25-minute Pomodoro session
+- **⏱️ Manage Meeting Time**: Prevent meetings from running over
+- **🍳 Kitchen Timer**: The perfect assistant for cooking or baking
+- **💻 Limit Screen Time**: Help manage your child's internet usage
+- **🏋️ Workout Timer**: Time intervals for fitness routines
 
-### 隐私保障
+### Privacy First
 
-我们非常重视用户隐私。New Countdown Timer 完全在本地运行，不会收集或传输任何个人数据。所有设置都只保存在你的浏览器中。
+We take your privacy seriously. New Countdown Timer runs entirely locally and does not collect or transmit any personal data. All settings are stored only in your browser.
 
-### 简单易用
+### Simple to Use
 
-只需点击扩展图标，设置你需要的时间，然后点击"开始倒计时"即可。倒计时运行时，你可以看到浏览器工具栏上的图标动态显示剩余时间。
+Just click the extension icon, set your desired time, and click "Start Countdown." While the timer is running, you can see the remaining time dynamically displayed in the browser toolbar icon.
 
-### 轻量高效
+### Lightweight & Efficient
 
-New Countdown Timer 经过优化，资源占用极低，不会拖慢你的浏览器性能。
+New Countdown Timer is optimized for minimal resource usage and will not slow down your browser.
 
-### 键盘友好
+### Keyboard Friendly
 
-支持键盘操作，可以使用加减按钮或直接输入数字来调整时间，按 Enter 键快速开始或取消倒计时。
+Supports keyboard operations: use plus/minus buttons or type numbers directly to adjust the timer, and press Enter to quickly start or cancel the countdown.
 
-### 开源透明
+### Open Source & Transparent
 
-这是一个开源项目，你可以在 GitHub 上查看源代码。
+This is an open-source project. You can view the source code on GitHub.
 
 ---
 
-如果你有任何问题、建议或反馈，请随时通过 Chrome Web Store 的评论或我们的联系邮箱与我们联系。
+If you have any questions, suggestions, or feedback, please contact us via the Chrome Web Store reviews or our contact email.
 
-感谢使用 New Countdown Timer，希望它能帮助你更有效地管理时间！
+Thank you for using New Countdown Timer. We hope it helps you manage your time more effectively!
