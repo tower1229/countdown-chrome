@@ -66,7 +66,7 @@ export const playWithOffscreenDocument = async (
         soundPath,
         volume,
       },
-      (response) => {
+      (_response) => {
         if (chrome.runtime.lastError) {
           reject(chrome.runtime.lastError);
         } else {
