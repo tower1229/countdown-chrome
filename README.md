@@ -1,170 +1,108 @@
 # <img src="docs/440x280.png" alt="Countdown Timer Logo" width="440" height="280" style="display:block;margin:auto;" />
 
-# Countdown Timer Chrome Extension
+# Countdown Timer Chrome 倒计时插件
 
-> **Multi-timer Chrome Extension for Focused Productivity**
-
-## 🚀 What is Countdown Timer?
-
-**Countdown Timer** is your all-in-one Chrome extension for managing multiple countdowns. Whether you’re working, studying, cooking, or taking breaks, set up custom timers, personalize them, and stay on track—all from your browser toolbar.
-
-**Example use cases:**
-
-- Pomodoro work sessions
-- Study intervals
-- Cooking reminders
-- Exercise sets
-- Quick breaks
+> **为专注而生的多定时器提醒工具**
 
 ---
 
-## ✨ Features
+## ☕ 背景故事：一杯好茶的灵感
 
-- **Multiple Custom Timers:** Create, edit, delete, and save as many timers as you need.
-- **Drag-and-Drop Sorting:** Organize your timers for quick access.
-- **Color & Sound Customization:** Assign unique colors and notification sounds to each timer.
-- **One-Click Start:** Instantly start any saved timer from the list.
-- **Live Toolbar Countdown:** See remaining time directly on the Chrome toolbar icon.
-- **Material Design UI:** Clean, modern, and intuitive interface.
-- **Keyboard & Screen Reader Friendly:** Full accessibility support.
-- **Privacy-First:** No tracking, no data collection, secure local storage.
-- **Notification & Sound:** Get notified with your chosen sound when time’s up.
+作者是一名热爱泡茶的程序员，工作时常常一头扎进代码世界，等回过神来，茶早已泡得太浓，错过了最佳饮用时间。为了解决"泡茶忘计时"的困扰，他开发了这款 Chrome 倒计时插件——只需提前设置好时间，插件就会在预定时刻发出声音提醒，让你不错过每一杯好茶的黄金时刻。
+
+> 当然，倒计时不仅仅适合泡茶，也适合专注工作、学习、运动、烹饪等各种场景。
 
 ---
 
-## 🛠️ How It Works
+## 🚀 插件简介
 
-1. **Open the Extension**  
-   Click the Countdown Timer icon to open the popup.
-2. **Timer List View**  
-   See all your saved timers. Drag to reorder, click to start, or edit/delete as needed.
-3. **Create/Edit Timer**  
-   Set hours, minutes, seconds, pick a color, and choose a sound. Save to add to your list.
-4. **Start a Timer**  
-   When a timer is running, only the countdown view is shown for focus. Toolbar icon updates every second.
-5. **Get Notified**  
-   When time’s up, receive a desktop notification and your selected sound. The list view returns automatically.
+**Countdown Timer** 是一款极简高效的 Chrome 浏览器倒计时扩展，支持多定时器管理、个性化提醒和极致隐私保护。无论你是泡茶、专注、休息还是烹饪，都能帮你把握每一个重要时刻。
+
+---
+
+## ✨ 主要功能
+
+- **多定时器管理**：可创建、编辑、删除多个自定义定时器，常用场景一键启动。
+- **拖拽排序**：支持定时器列表自由拖拽排序，贴合你的使用习惯。
+- **颜色与声音自定义**：每个定时器可设置专属颜色和提醒音效，醒目又贴心。
+- **一键启动**：列表中任意定时器均可一键快速启动。
+- **工具栏实时倒计时**：Chrome 工具栏图标动态显示剩余时间，随时掌控进度。
+- **专注倒计时界面**：倒计时进行中时仅展示倒计时，避免干扰，专注当前。
+- **到时通知+声音提醒**：时间到达自动弹窗通知并播放自选音效。
+- **极简美观设计**：遵循 Material Design，界面清爽易用。
+- **隐私安全**：所有数据仅存储在本地，绝不上传或追踪。
+
+---
+
+## 🖼️ 插件界面预览
 
 <div align="center">
-<img src="docs/screen/Snipaste_2025-04-28_17-28-40.png" alt="Main UI Screenshot" width="400" />
-  <img src="docs/screen/Snipaste_2025-04-28_17-28-12.png" alt="Set Timer Screenshot" width="400" />
-  <img src="docs/screen/Snipaste_2025-04-28_17-27-53.png" alt="Toolbar Countdown Screenshot" width="400" />
-  <img src="docs/screen/Snipaste_2025-04-28_17-26-36.png" alt="Notification Screenshot" width="400" />
+  <img src="docs/screen/Snipaste_2025-04-28_17-28-40.png" alt="主界面截图" width="400" />
+  <img src="docs/screen/Snipaste_2025-04-28_17-28-12.png" alt="定时器设置界面" width="400" />
+  <img src="docs/screen/Snipaste_2025-04-28_17-27-53.png" alt="工具栏倒计时" width="400" />
+  <img src="docs/screen/Snipaste_2025-04-28_17-26-36.png" alt="到时通知" width="400" />
 </div>
 
 ---
 
-## 🧩 Custom Timer Management
+## 🛠️ 使用方法
 
-- **Save Your Favorites:** Store frequently used timers for instant access.
-- **Drag-and-Drop:** Reorder timers to match your workflow.
-- **Color & Sound:** Personalize each timer for easy recognition.
-- **Quick Start:** Launch any timer with a single click.
-
----
-
-## ♿ Accessibility & 🔒 Privacy
-
-- **Accessibility:**
-  - ARIA labels, keyboard navigation, and high-contrast color options
-  - Fully screen reader compatible
-- **Privacy & Security:**
-  - No data collection, no analytics, no tracking
-  - All data stored securely in your browser (chrome.storage.local)
-  - Strict Content Security Policy (CSP)
-  - Minimal permissions, secure messaging
-
-Read our [Privacy Policy](docs/privacy-policy.md) for details.
+1. **安装插件**  
+   [Chrome 应用商店（即将上线）](#)
+2. **固定到工具栏**  
+   点击 Chrome 右上角拼图图标，将 Countdown Timer 固定到工具栏。
+3. **创建/管理定时器**  
+   打开插件弹窗，设置时间、颜色、声音，保存即可。
+4. **一键启动倒计时**  
+   点击列表中任意定时器即可开始倒计时。
+5. **专注提醒**  
+   倒计时过程中仅显示倒计时界面，时间到自动弹窗+声音提醒。
 
 ---
 
-## 📦 Installation
+## 🧩 多定时器与个性化
 
-- **[Chrome Web Store – Coming Soon!](#)**
-- Or, [install manually](#manual-install):
-  1. Clone or download this repo
-  2. Run `yarn install && yarn build`
-  3. Go to `chrome://extensions/`, enable Developer Mode
-  4. Click "Load unpacked" and select the `dist` folder
+- **常用定时器一键保存，随时调用**
+- **拖拽排序，按需排列**
+- **颜色/音效自定义，醒目易辨**
+- **支持多场景：泡茶、专注、休息、烹饪、运动等**
 
 ---
 
-## ❓ FAQ / Troubleshooting
+## ♿ 无障碍与隐私安全
 
-**Q: Why can’t I see the timer list when a timer is running?**  
-A: For focus, only the countdown is shown during an active timer. The list returns when the countdown ends or is canceled.
+- **无障碍支持**：全键盘操作、ARIA 标签、屏幕阅读器友好、色彩对比充足
+- **隐私保护**：所有数据仅存储于本地（chrome.storage.local），绝不上传或追踪
+- **最小权限原则**：仅申请必要权限，严格内容安全策略（CSP）
 
-**Q: How do I change the notification sound or color?**  
-A: Edit your timer and select your preferred sound and color before saving.
-
-**Q: How is my data stored?**  
-A: All timer data is stored locally in your browser using `chrome.storage.local`. Nothing is sent to any server.
-
-**Q: Can I use keyboard shortcuts?**  
-A: Yes! All controls are keyboard accessible and support screen readers.
+详见 [隐私政策](docs/privacy-policy.md)
 
 ---
 
-## 👩‍💻 For Developers
+## 常见问题 FAQ
 
-### 技术栈
+**Q: 为什么倒计时进行中看不到定时器列表？**  
+A: 为了专注体验，倒计时进行时只显示倒计时界面，结束后自动返回列表。
 
-- React
-- TypeScript
-- TailwindCSS
-- Chrome Extension API (Manifest V3)
+**Q: 如何自定义提醒音效和颜色？**  
+A: 编辑定时器时可选择专属颜色和音效，保存即可。
 
-### 开发环境设置
+**Q: 我的定时器数据会被上传吗？**  
+A: 不会，所有数据仅存储在本地浏览器，绝不上传。
 
-1. 克隆仓库
+**Q: 支持键盘操作和无障碍吗？**  
+A: 完全支持，所有操作均可通过键盘完成，屏幕阅读器友好。
 
-```sh
-git clone https://github.com/yourname/countdown-chrome.git
-cd countdown-chrome
-```
+---
 
-2. 安装依赖
+## 📦 安装方式
 
-```sh
-yarn install
-```
-
-3. 开发模式构建
-
-```sh
-yarn dev
-```
-
-4. 生产构建
-
-```sh
-yarn build
-```
-
-### 在 Chrome 中加载扩展
-
-1. 打开 Chrome 浏览器，访问 `chrome://extensions/`
-2. 开启"开发者模式"
-3. 点击"加载已解压的扩展"
-4. 选择项目的 `dist` 目录
-
-### 主要文件结构
-
-```
-├── public/
-│   ├── manifest.json
-│   ├── icons/
-│   ├── sounds/
-├── src/
-│   ├── popup/
-│   ├── background/
-│   ├── utils/
-│   ├── contexts/
-│   └── types/
-├── package.json
-├── tsconfig.json
-└── webpack.config.js
-```
+- **[Chrome 应用商店（即将上线）](#)**
+- 或手动安装：
+  1. 克隆或下载本仓库
+  2. 运行 `yarn install && yarn build`
+  3. 打开 `chrome://extensions/`，开启开发者模式
+  4. 点击"加载已解压的扩展"，选择 `dist` 文件夹
 
 ---
 
