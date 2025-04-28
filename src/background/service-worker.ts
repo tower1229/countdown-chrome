@@ -117,7 +117,7 @@ const completeTimer = async () => {
       console.debug("Failed to play sound using offscreen document:", error);
       // Fallback: attempt to play sound via content scripts
 
-      // First check our known active content scripts
+      // First try to play in known active content script tabs
       let soundPlayed = false;
       if (activeContentScriptTabs.size > 0) {
         for (const tabId of activeContentScriptTabs) {
@@ -147,35 +147,33 @@ const completeTimer = async () => {
         }
       }
 
-      // If we didn't successfully play through known tabs, try querying all tabs
+      // If we still didn't play the sound, try to get the active tab using activeTab permission
       if (!soundPlayed) {
-        chrome.tabs.query({}, (tabs) => {
-          for (const tab of tabs) {
-            const tabId = tab.id;
-            if (
-              typeof tabId === "number" &&
-              tab.url?.startsWith("http") &&
-              !activeContentScriptTabs.has(tabId)
-            ) {
-              chrome.tabs.sendMessage(
-                tabId,
-                {
-                  type: "PLAY_SOUND",
-                  soundPath: sound,
-                },
-                (response) => {
-                  if (chrome.runtime.lastError) {
-                    console.debug(
-                      `Unable to play sound in tab ${tabId}:`,
-                      chrome.runtime.lastError.message
-                    );
-                  } else if (response?.success) {
-                    console.debug(`Successfully played sound in tab ${tabId}`);
-                    activeContentScriptTabs.add(tabId); // Add to known active tabs
-                  }
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          const activeTab = tabs[0];
+          const tabId = activeTab?.id;
+          if (tabId !== undefined && typeof tabId === "number") {
+            chrome.tabs.sendMessage(
+              tabId,
+              {
+                type: "PLAY_SOUND",
+                soundPath: sound,
+              },
+              (response) => {
+                if (chrome.runtime.lastError) {
+                  console.debug(
+                    "Unable to play sound in active tab:",
+                    chrome.runtime.lastError.message
+                  );
+                } else if (response?.success) {
+                  console.debug("Successfully played sound in active tab");
+                  // Add to known active tabs for future use
+                  activeContentScriptTabs.add(tabId);
                 }
-              );
-            }
+              }
+            );
+          } else {
+            console.debug("No active tab found to play sound");
           }
         });
       }
