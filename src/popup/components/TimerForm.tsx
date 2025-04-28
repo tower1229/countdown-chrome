@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CustomTimer, DEFAULT_COLORS, DEFAULT_SOUNDS } from "../../types";
+import TimeInput from "./TimeInput";
 
 interface TimerFormProps {
   timer: CustomTimer | null;
@@ -66,14 +67,6 @@ const TimerForm: React.FC<TimerFormProps> = ({
     onSave(newTimer);
   };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setter: React.Dispatch<React.SetStateAction<number>>
-  ) => {
-    const value = parseInt(e.target.value) || 0;
-    setter(Math.max(0, value));
-  };
-
   // 增加和减少输入值的处理函数
   const handleIncrement = (
     setter: React.Dispatch<React.SetStateAction<number>>,
@@ -95,7 +88,7 @@ const TimerForm: React.FC<TimerFormProps> = ({
       <div className="mb-4">
         <label
           htmlFor="timer-name"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="font-medium text-sm mb-1 text-gray-700 block"
         >
           名称
         </label>
@@ -104,7 +97,7 @@ const TimerForm: React.FC<TimerFormProps> = ({
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border rounded-md w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="输入定时器名称"
           aria-label="定时器名称"
         />
@@ -113,33 +106,33 @@ const TimerForm: React.FC<TimerFormProps> = ({
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <label
+            className="font-medium text-sm text-gray-700 w-20"
             htmlFor="hours-input"
-            className="w-20 text-sm font-medium text-gray-700"
           >
             小时:
           </label>
-          <div className="flex items-center">
+          <div className="flex gap-1 items-center">
             <button
               type="button"
               onClick={() => handleDecrement(setHours, hours)}
-              className="px-2 py-1 bg-gray-200 rounded-l-md hover:bg-gray-300 focus:outline-none"
+              className="rounded-l-md bg-gray-200 py-1 px-2 hover:bg-gray-300 focus:outline-none"
               aria-label="减少小时"
             >
               -
             </button>
-            <input
+            <TimeInput
               id="hours-input"
-              type="number"
-              min="0"
               value={hours}
-              onChange={(e) => handleInputChange(e, setHours)}
-              className="w-12 p-1 border text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
-              aria-label="小时"
+              onChange={setHours}
+              min={0}
+              max={99}
+              label=""
+              ariaLabel="小时输入框，0到99"
             />
             <button
               type="button"
-              onClick={() => handleIncrement(setHours, hours)}
-              className="px-2 py-1 bg-gray-200 rounded-r-md hover:bg-gray-300 focus:outline-none"
+              onClick={() => handleIncrement(setHours, hours, 99)}
+              className="rounded-r-md bg-gray-200 py-1 px-2 hover:bg-gray-300 focus:outline-none"
               aria-label="增加小时"
             >
               +
@@ -149,34 +142,33 @@ const TimerForm: React.FC<TimerFormProps> = ({
 
         <div className="flex items-center justify-between">
           <label
+            className="font-medium text-sm text-gray-700 w-20"
             htmlFor="minutes-input"
-            className="w-20 text-sm font-medium text-gray-700"
           >
             分钟:
           </label>
-          <div className="flex items-center">
+          <div className="flex gap-1 items-center">
             <button
               type="button"
               onClick={() => handleDecrement(setMinutes, minutes)}
-              className="px-2 py-1 bg-gray-200 rounded-l-md hover:bg-gray-300 focus:outline-none"
+              className="rounded-l-md bg-gray-200 py-1 px-2 hover:bg-gray-300 focus:outline-none"
               aria-label="减少分钟"
             >
               -
             </button>
-            <input
+            <TimeInput
               id="minutes-input"
-              type="number"
-              min="0"
-              max="59"
               value={minutes}
-              onChange={(e) => handleInputChange(e, setMinutes)}
-              className="w-12 p-1 border text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
-              aria-label="分钟"
+              onChange={setMinutes}
+              min={0}
+              max={59}
+              label=""
+              ariaLabel="分钟输入框，0到59"
             />
             <button
               type="button"
               onClick={() => handleIncrement(setMinutes, minutes, 59)}
-              className="px-2 py-1 bg-gray-200 rounded-r-md hover:bg-gray-300 focus:outline-none"
+              className="rounded-r-md bg-gray-200 py-1 px-2 hover:bg-gray-300 focus:outline-none"
               aria-label="增加分钟"
             >
               +
@@ -186,34 +178,33 @@ const TimerForm: React.FC<TimerFormProps> = ({
 
         <div className="flex items-center justify-between">
           <label
+            className="font-medium text-sm text-gray-700 w-20"
             htmlFor="seconds-input"
-            className="w-20 text-sm font-medium text-gray-700"
           >
             秒数:
           </label>
-          <div className="flex items-center">
+          <div className="flex gap-1 items-center">
             <button
               type="button"
               onClick={() => handleDecrement(setSeconds, seconds)}
-              className="px-2 py-1 bg-gray-200 rounded-l-md hover:bg-gray-300 focus:outline-none"
+              className="rounded-l-md bg-gray-200 py-1 px-2 hover:bg-gray-300 focus:outline-none"
               aria-label="减少秒数"
             >
               -
             </button>
-            <input
+            <TimeInput
               id="seconds-input"
-              type="number"
-              min="0"
-              max="59"
               value={seconds}
-              onChange={(e) => handleInputChange(e, setSeconds)}
-              className="w-12 p-1 border text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
-              aria-label="秒数"
+              onChange={setSeconds}
+              min={0}
+              max={59}
+              label=""
+              ariaLabel="秒数输入框，0到59"
             />
             <button
               type="button"
               onClick={() => handleIncrement(setSeconds, seconds, 59)}
-              className="px-2 py-1 bg-gray-200 rounded-r-md hover:bg-gray-300 focus:outline-none"
+              className="rounded-r-md bg-gray-200 py-1 px-2 hover:bg-gray-300 focus:outline-none"
               aria-label="增加秒数"
             >
               +
@@ -223,7 +214,7 @@ const TimerForm: React.FC<TimerFormProps> = ({
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="font-medium text-sm mb-1 text-gray-700 block">
           颜色
         </label>
         <div className="flex flex-wrap gap-2">
@@ -247,7 +238,7 @@ const TimerForm: React.FC<TimerFormProps> = ({
       <div className="mb-4">
         <label
           htmlFor="sound-select"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="font-medium text-sm mb-1 text-gray-700 block"
         >
           提醒声音
         </label>
@@ -255,7 +246,7 @@ const TimerForm: React.FC<TimerFormProps> = ({
           id="sound-select"
           value={sound}
           onChange={(e) => setSound(e.target.value)}
-          className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border rounded-md w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           aria-label="提醒声音"
         >
           {DEFAULT_SOUNDS.map((soundOption) => (
@@ -266,18 +257,18 @@ const TimerForm: React.FC<TimerFormProps> = ({
         </select>
       </div>
 
-      <div className="flex justify-between mt-6">
+      <div className="flex mt-6 justify-between">
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          className="rounded-md font-medium bg-gray-200 text-sm py-2 px-4 text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
           aria-label="取消"
         >
           取消
         </button>
         <button
           type="submit"
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="rounded-md font-medium bg-blue-600 text-sm text-white py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           aria-label="保存"
         >
           {isCreatingNew ? "创建" : "保存"}
