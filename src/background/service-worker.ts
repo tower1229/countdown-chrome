@@ -75,8 +75,6 @@ const completeTimer = async () => {
     try {
       await playWithOffscreenDocument(sound, 0.8);
     } catch (error) {
-      console.error("播放通知声音失败:", error);
-
       // 备选方案: 尝试通过内容脚本播放声音
       chrome.tabs.query({}, (tabs) => {
         for (const tab of tabs) {

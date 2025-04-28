@@ -14,7 +14,6 @@ export interface TimerSettings {
 
 export interface CustomTimer {
   id: string;
-  name: string;
   hours: number;
   minutes: number;
   seconds: number;

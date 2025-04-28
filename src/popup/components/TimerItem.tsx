@@ -18,7 +18,7 @@ const TimerItem: React.FC<TimerItemProps> = ({
   onDelete,
   isDragging,
 }) => {
-  const { name, hours, minutes, seconds, color } = timer;
+  const { hours, minutes, seconds, color } = timer;
   const duration = formatTimerItem(hours, minutes, seconds);
 
   return (
@@ -51,7 +51,6 @@ const TimerItem: React.FC<TimerItemProps> = ({
           </svg>
         </div>
         <div className="flex-1">
-          <div className="font-medium">{name}</div>
           <div className="text-sm text-gray-500">{duration}</div>
         </div>
       </div>

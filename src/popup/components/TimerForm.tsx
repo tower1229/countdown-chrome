@@ -9,13 +9,7 @@ interface TimerFormProps {
   isCreatingNew: boolean;
 }
 
-const TimerForm: React.FC<TimerFormProps> = ({
-  timer,
-  onSave,
-  onCancel,
-  isCreatingNew,
-}) => {
-  const [name, setName] = useState<string>("");
+const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
@@ -24,14 +18,12 @@ const TimerForm: React.FC<TimerFormProps> = ({
 
   useEffect(() => {
     if (timer) {
-      setName(timer.name);
       setHours(timer.hours);
       setMinutes(timer.minutes);
       setSeconds(timer.seconds);
       setColor(timer.color);
       setSound(timer.sound);
     } else {
-      setName("");
       setHours(0);
       setMinutes(0);
       setSeconds(0);
@@ -43,11 +35,6 @@ const TimerForm: React.FC<TimerFormProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (name.trim() === "") {
-      alert("请输入定时器名称");
-      return;
-    }
-
     if (hours === 0 && minutes === 0 && seconds === 0) {
       alert("请设置时间");
       return;
@@ -55,7 +42,6 @@ const TimerForm: React.FC<TimerFormProps> = ({
 
     const newTimer: CustomTimer = {
       id: timer?.id || crypto.randomUUID(),
-      name,
       hours,
       minutes,
       seconds,
@@ -85,24 +71,6 @@ const TimerForm: React.FC<TimerFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="mb-4">
-        <label
-          htmlFor="timer-name"
-          className="font-medium text-sm mb-1 text-gray-700 block"
-        >
-          名称
-        </label>
-        <input
-          id="timer-name"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="border rounded-md w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="输入定时器名称"
-          aria-label="定时器名称"
-        />
-      </div>
-
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <label
@@ -139,7 +107,6 @@ const TimerForm: React.FC<TimerFormProps> = ({
             </button>
           </div>
         </div>
-
         <div className="flex items-center justify-between">
           <label
             className="font-medium text-sm text-gray-700 w-20"
@@ -175,7 +142,6 @@ const TimerForm: React.FC<TimerFormProps> = ({
             </button>
           </div>
         </div>
-
         <div className="flex items-center justify-between">
           <label
             className="font-medium text-sm text-gray-700 w-20"
@@ -236,42 +202,34 @@ const TimerForm: React.FC<TimerFormProps> = ({
       </div>
 
       <div className="mb-4">
-        <label
-          htmlFor="sound-select"
-          className="font-medium text-sm mb-1 text-gray-700 block"
-        >
-          提醒声音
+        <label className="font-medium text-sm mb-1 text-gray-700 block">
+          声音
         </label>
-        <select
-          id="sound-select"
-          value={sound}
-          onChange={(e) => setSound(e.target.value)}
-          className="border rounded-md w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          aria-label="提醒声音"
-        >
+        <div className="flex flex-wrap gap-2">
           {DEFAULT_SOUNDS.map((soundOption) => (
-            <option key={soundOption} value={soundOption}>
-              {soundOption.charAt(0).toUpperCase() + soundOption.slice(1)}
-            </option>
+            <button
+              key={soundOption}
+              type="button"
+              onClick={() => setSound(soundOption)}
+              className={`px-3 py-1 rounded focus:outline-none border ${
+                sound === soundOption
+                  ? "bg-blue-500 text-white border-blue-500"
+                  : "bg-white text-gray-700 border-gray-300"
+              }`}
+              aria-label={`声音: ${soundOption}`}
+            >
+              {soundOption.replace(".mp3", "")}
+            </button>
           ))}
-        </select>
+        </div>
       </div>
 
-      <div className="flex mt-6 justify-between">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="rounded-md font-medium bg-gray-200 text-sm py-2 px-4 text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          aria-label="取消"
-        >
-          取消
+      <div className="flex gap-2">
+        <button type="submit" className="btn btn-primary">
+          保存
         </button>
-        <button
-          type="submit"
-          className="rounded-md font-medium bg-blue-600 text-sm text-white py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          aria-label="保存"
-        >
-          {isCreatingNew ? "创建" : "保存"}
+        <button type="button" onClick={onCancel} className="btn btn-secondary">
+          取消
         </button>
       </div>
     </form>
