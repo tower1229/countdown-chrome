@@ -1,17 +1,21 @@
 import { TimerState } from "../types";
-import { formatTime } from "../utils/timer";
+import { createIconText } from "../utils/timer";
 import { setExtensionIcon } from "../utils/icon-generator";
 import {
   getTimerState,
   saveTimerState,
   clearTimerState,
 } from "../utils/storage";
+import {
+  playNotificationSound,
+  DEFAULT_NOTIFICATION_SOUND,
+} from "../utils/audio";
 
 // 更新图标和发送消息的间隔
 const UPDATE_INTERVAL = 1000; // 1秒
 
-// 声音文件路径
-const NOTIFICATION_SOUND = "/sounds/notification.mp3";
+// 重置图标显示的默认文本
+const DEFAULT_ICON_TEXT = "0:00";
 
 // 计时器更新函数
 const updateTimer = async () => {
@@ -32,7 +36,7 @@ const updateTimer = async () => {
     });
 
     // 更新图标显示
-    const timeText = formatTime(remainingTime).split(":").slice(-2).join(":");
+    const timeText = createIconText(remainingTime);
     await setExtensionIcon(timeText);
 
     // 检查倒计时是否结束
@@ -44,18 +48,6 @@ const updateTimer = async () => {
   }
 };
 
-// 播放通知声音
-const playNotificationSound = () => {
-  try {
-    const audio = new Audio(chrome.runtime.getURL(NOTIFICATION_SOUND));
-    audio.play().catch((error) => {
-      console.error("播放通知声音失败:", error);
-    });
-  } catch (error) {
-    console.error("创建音频对象失败:", error);
-  }
-};
-
 // 计时器完成函数
 const completeTimer = async () => {
   try {
@@ -63,7 +55,7 @@ const completeTimer = async () => {
     await clearTimerState();
 
     // 重置图标
-    await setExtensionIcon("00:00");
+    await setExtensionIcon(DEFAULT_ICON_TEXT);
 
     // 发送消息给popup
     chrome.runtime.sendMessage({ type: "TIMER_COMPLETED" });
@@ -83,7 +75,9 @@ const completeTimer = async () => {
     });
 
     // 播放通知声音
-    playNotificationSound();
+    playNotificationSound(DEFAULT_NOTIFICATION_SOUND).catch((error) => {
+      console.error("播放通知失败:", error);
+    });
 
     // 显示通知
     showNotification("倒计时结束", "您设置的倒计时已经结束");
@@ -124,7 +118,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     } else if (message.type === "CANCEL_TIMER") {
       clearTimerState().then(() => {
         // 重置图标
-        setExtensionIcon("00:00");
+        setExtensionIcon(DEFAULT_ICON_TEXT);
         chrome.runtime.sendMessage({ type: "TIMER_CANCELLED" });
         sendResponse({ success: true });
       });
@@ -143,6 +137,6 @@ setInterval(updateTimer, UPDATE_INTERVAL);
 // 扩展安装或更新时初始化
 chrome.runtime.onInstalled.addListener(() => {
   // 重置图标和状态
-  setExtensionIcon("00:00");
+  setExtensionIcon(DEFAULT_ICON_TEXT);
   clearTimerState();
 });

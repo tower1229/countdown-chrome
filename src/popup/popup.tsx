@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import ReactDOM from "react-dom/client";
 import "../utils/index.css";
 import { TimerState } from "../types";
+import { formatTime, calculateTotalSeconds } from "../utils/timer";
 
 const Popup: React.FC = () => {
   const [hours, setHours] = useState<number>(0);
@@ -72,7 +73,7 @@ const Popup: React.FC = () => {
   }, [isRunning]);
 
   const handleStart = useCallback(() => {
-    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+    const totalSeconds = calculateTotalSeconds(hours, minutes, seconds);
     if (totalSeconds <= 0) return;
 
     const endTime = Date.now() + totalSeconds * 1000;
@@ -97,17 +98,6 @@ const Popup: React.FC = () => {
     chrome.runtime.sendMessage({ type: "CANCEL_TIMER" });
     setIsRunning(false);
   }, []);
-
-  const formatTime = (milliseconds: number): string => {
-    const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-
-    return `${hours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
