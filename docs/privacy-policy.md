@@ -1,16 +1,16 @@
-# Tab Countdown Timer - 隐私政策
+# New Countdown Timer - 隐私政策
 
 **最后更新日期:** 当前日期
 
 ## 简介
 
-Tab Countdown Timer 是一个简单的 Chrome 扩展，允许用户设置倒计时，并在倒计时结束时收到通知。我们高度重视您的隐私。本隐私政策概述了我们收集、使用和保护您使用扩展时的信息的方式。
+New Countdown Timer 是一个简单的 Chrome 扩展，允许用户设置倒计时，并在倒计时结束时收到通知。我们高度重视您的隐私。本隐私政策概述了我们收集、使用和保护您使用扩展时的信息的方式。
 
 ## 数据收集和使用
 
 ### 我们收集哪些信息
 
-Tab Countdown Timer 扩展仅收集以下信息：
+New Countdown Timer 扩展仅收集以下信息：
 
 - **倒计时设置**: 您最近设置的倒计时小时、分钟和秒数。
 - **倒计时状态**: 当前倒计时的状态，包括是否正在运行以及结束时间。
@@ -29,7 +29,7 @@ Tab Countdown Timer 扩展仅收集以下信息：
 
 ## 权限使用
 
-Tab Countdown Timer 扩展需要以下权限：
+New Countdown Timer 扩展需要以下权限：
 
 - **storage**: 用于在本地存储倒计时设置和状态
 - **alarms**: 用于管理定时通知

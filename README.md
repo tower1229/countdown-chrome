@@ -1,4 +1,4 @@
-# Tab Countdown Timer
+# New Countdown Timer
 
 一个简单的 Chrome 浏览器倒计时扩展，允许用户设置特定的时间，在浏览器工具栏显示倒计时，并在倒计时结束时发出通知。
 

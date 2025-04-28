@@ -43,7 +43,7 @@ const TimerListPage: React.FC<TimerListPageProps> = ({
   return (
     <div className="timer-list-container">
       <div className="flex mb-6 justify-between items-center">
-        <h1 className="page-title">Tab Countdown Timer</h1>
+        <h1 className="page-title">New Countdown Timer</h1>
         <button
           onClick={onCreateTimer}
           className="btn btn-sm btn-square btn-primary"

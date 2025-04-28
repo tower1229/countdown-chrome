@@ -1,4 +1,4 @@
-# Tab Countdown Timer - Chrome 商店描述
+# New Countdown Timer - Chrome 商店描述
 
 ## 简短描述（最多 132 字符）
 
@@ -6,9 +6,9 @@
 
 ## 详细描述（最多 16,000 字符）
 
-**Tab Countdown Timer - 专注时间管理的 Chrome 扩展**
+**New Countdown Timer - 专注时间管理的 Chrome 扩展**
 
-Tab Countdown Timer 是一款简单而强大的 Chrome 浏览器倒计时工具，帮助你更有效地管理时间。无论是控制学习时间、烹饪时间提醒，还是管理会议时长，这个轻量级扩展都能满足你的需求。
+New Countdown Timer 是一款简单而强大的 Chrome 浏览器倒计时工具，帮助你更有效地管理时间。无论是控制学习时间、烹饪时间提醒，还是管理会议时长，这个轻量级扩展都能满足你的需求。
 
 ### 主要功能
 
@@ -28,7 +28,7 @@ Tab Countdown Timer 是一款简单而强大的 Chrome 浏览器倒计时工具�
 
 ### 隐私保障
 
-我们非常重视用户隐私。Tab Countdown Timer 完全在本地运行，不会收集或传输任何个人数据。所有设置都只保存在你的浏览器中。
+我们非常重视用户隐私。New Countdown Timer 完全在本地运行，不会收集或传输任何个人数据。所有设置都只保存在你的浏览器中。
 
 ### 简单易用
 
@@ -36,7 +36,7 @@ Tab Countdown Timer 是一款简单而强大的 Chrome 浏览器倒计时工具�
 
 ### 轻量高效
 
-Tab Countdown Timer 经过优化，资源占用极低，不会拖慢你的浏览器性能。
+New Countdown Timer 经过优化，资源占用极低，不会拖慢你的浏览器性能。
 
 ### 键盘友好
 
@@ -50,4 +50,4 @@ Tab Countdown Timer 经过优化，资源占用极低，不会拖慢你的浏览
 
 如果你有任何问题、建议或反馈，请随时通过 Chrome Web Store 的评论或我们的联系邮箱与我们联系。
 
-感谢使用 Tab Countdown Timer，希望它能帮助你更有效地管理时间！
+感谢使用 New Countdown Timer，希望它能帮助你更有效地管理时间！
