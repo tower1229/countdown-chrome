@@ -47,17 +47,25 @@ export const formatTime = (milliseconds: number): string => {
 
 /**
  * 创建图标显示的倒计时文本
+ * 优化显示格式：
+ * - 大于1小时: 显示小时数，例如 "1 h"
+ * - 大于1分钟: 显示分钟数，例如 "1 m"
+ * - 小于1分钟: 只显示秒数，例如 "59"
  */
 export const createIconText = (milliseconds: number): string => {
   const totalSeconds = millisecondsToSeconds(milliseconds);
+  const { hours, minutes, seconds } = calculateTimeUnits(totalSeconds);
 
-  // 如果时间超过1小时，显示小时:分钟
-  if (totalSeconds >= 3600) {
-    const { hours, minutes } = calculateTimeUnits(totalSeconds);
-    return `${hours}:${minutes.toString().padStart(2, "0")}`;
+  // 如果时间超过1小时，只显示小时数和h
+  if (hours > 0) {
+    return `${hours}h`;
   }
 
-  // 如果时间小于1小时，显示分钟:秒
-  const { minutes, seconds } = calculateTimeUnits(totalSeconds);
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  // 如果时间超过1分钟，只显示分钟数和m
+  if (minutes > 0) {
+    return `${minutes}m`;
+  }
+
+  // 如果时间小于1分钟，只显示秒数
+  return `${seconds}`;
 };

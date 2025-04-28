@@ -3,6 +3,10 @@ import ReactDOM from "react-dom/client";
 import "../utils/index.css";
 import { TimerState } from "../types";
 import { formatTime, calculateTotalSeconds } from "../utils/timer";
+import {
+  playNotificationSound,
+  DEFAULT_NOTIFICATION_SOUND,
+} from "../utils/audio";
 
 const Popup: React.FC = () => {
   const [hours, setHours] = useState<number>(0);
@@ -38,10 +42,13 @@ const Popup: React.FC = () => {
     const handleMessage = (message: any) => {
       if (message.type === "TIMER_UPDATE") {
         setRemainingTime(message.remainingTime);
-      } else if (
-        message.type === "TIMER_COMPLETED" ||
-        message.type === "TIMER_CANCELLED"
-      ) {
+      } else if (message.type === "TIMER_COMPLETED") {
+        setIsRunning(false);
+        // 在popup中也尝试播放声音
+        playNotificationSound(DEFAULT_NOTIFICATION_SOUND).catch(() => {
+          // 忽略错误
+        });
+      } else if (message.type === "TIMER_CANCELLED") {
         setIsRunning(false);
       }
     };

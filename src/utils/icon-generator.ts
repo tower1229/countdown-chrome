@@ -24,16 +24,32 @@ export const generateTimerIcon = (
       context.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
       context.fill();
 
-      // 绘制文本
+      // 优化文本显示
       context.fillStyle = "#FFFFFF"; // 白色文本
       context.textAlign = "center";
       context.textBaseline = "middle";
 
-      // 根据文本长度和图标大小调整字号
-      const fontSize =
-        text.length > 4 ? Math.floor(size / 4) : Math.floor(size / 2.5);
+      // 根据文本长度和图标大小调整字号，为不同长度的文本精确优化
+      let fontSize;
+      if (text.length === 1) {
+        // 单个数字，使用最大字体
+        fontSize = Math.floor(size * 0.85);
+      } else if (text.length === 2) {
+        // 两位数字，如"59"、"20"等
+        fontSize = Math.floor(size * 0.75);
+      } else if (text.length === 3) {
+        // 三位数字或带单位的短文本，如"5m"、"2h"
+        fontSize = Math.floor(size * 0.55);
+      } else {
+        // 更长的文本
+        fontSize = Math.floor(size * 0.45);
+      }
+
       context.font = `bold ${fontSize}px Arial`;
-      context.fillText(text, size / 2, size / 2);
+
+      // 精确计算文本的垂直位置
+      const verticalOffset = size * 0.02;
+      context.fillText(text, size / 2, size / 2 + verticalOffset);
 
       // 转换为ImageData
       return context.getImageData(0, 0, size, size);
@@ -67,5 +83,26 @@ export const setExtensionIcon = async (text: string): Promise<void> => {
     } catch (badgeError) {
       console.error("设置徽章失败:", badgeError);
     }
+  }
+};
+
+/**
+ * 恢复默认图标
+ */
+export const restoreDefaultIcon = async (): Promise<void> => {
+  try {
+    // 清除所有自定义图标和徽章
+    await chrome.action.setIcon({
+      path: {
+        "16": "/icons/icon16.png",
+        "48": "/icons/icon48.png",
+        "128": "/icons/icon128.png",
+      },
+    });
+
+    // 确保徽章也被清除
+    await chrome.action.setBadgeText({ text: "" });
+  } catch (error) {
+    console.error("恢复默认图标失败:", error);
   }
 };
