@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "Chrome extension for tab countdown timer",
     "main": "index.js",
+    "type": "module",
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
@@ -21,6 +22,8 @@
     },
     "devDependencies": {
         "@crxjs/vite-plugin": "^1.0.14",
+        "@tailwindcss/postcss": "^4.1.4",
+        "@tailwindcss/vite": "^4.1.4",
         "@types/chrome": "^0.0.317",
         "@types/react": "^19.1.2",
         "@types/react-dom": "^19.1.2",

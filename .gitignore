@@ -1,0 +1,64 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Chrome Extension build artifacts
+extension-dist/
+extension-build/
+
+# Environment variables
+.env
+.env.*
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE and editor folders
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Test coverage
+coverage/
+
+# Misc
+*.local
+*.cache
+*.log
+*.tgz
+
+# VSCode settings
+.settings/
+
+# Mac system files
+.AppleDouble
+.LSOverride
+
+# Windows system files
+Desktop.ini
+$RECYCLE.BIN/
+
+# Chrome Extension local storage
+chrome-profile/
+
+# Optional: ignore lock files if not using lockfile
+# package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Optional: ignore public/static assets if generated
+# public/
+# static/

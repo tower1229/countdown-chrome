@@ -90,7 +90,7 @@ const showNotification = (title: string, message: string) => {
 };
 
 // 处理消息
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   try {
     if (message.type === "START_TIMER") {
       // 保存计时器状态
