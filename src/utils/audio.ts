@@ -55,43 +55,82 @@ export const playWithOffscreenDocument = async (
   soundPath: string,
   volume: number = 1.0
 ): Promise<void> => {
-  // 确保offscreen文档已创建
-  await createOffscreenDocumentIfNeeded();
+  try {
+    // 确保offscreen文档已创建
+    await createOffscreenDocumentIfNeeded();
 
-  // 发送消息到offscreen文档播放音频
-  return new Promise<void>((resolve, reject) => {
-    chrome.runtime.sendMessage(
-      {
-        type: "PLAY_SOUND",
-        soundPath: getSoundPath(soundPath),
-        volume,
-      },
-      (_response) => {
-        if (chrome.runtime.lastError) {
-          reject(chrome.runtime.lastError);
-        } else {
-          resolve();
+    // 添加小延迟，确保离屏文档已完全初始化
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // 发送消息到offscreen文档播放音频
+    return new Promise<void>((resolve, reject) => {
+      chrome.runtime.sendMessage(
+        {
+          type: "PLAY_SOUND",
+          soundPath: getSoundPath(soundPath),
+          volume,
+        },
+        (_response) => {
+          if (chrome.runtime.lastError) {
+            console.debug(
+              "离屏文档通信错误:",
+              chrome.runtime.lastError.message
+            );
+            // 尝试再次创建离屏文档
+            createOffscreenDocumentIfNeeded()
+              .then(() => {
+                // 再次尝试发送消息
+                chrome.runtime.sendMessage(
+                  {
+                    type: "PLAY_SOUND",
+                    soundPath: getSoundPath(soundPath),
+                    volume,
+                  },
+                  (_retryResponse) => {
+                    if (chrome.runtime.lastError) {
+                      reject(chrome.runtime.lastError);
+                    } else {
+                      resolve();
+                    }
+                  }
+                );
+              })
+              .catch(reject);
+          } else {
+            resolve();
+          }
         }
-      }
-    );
-  });
+      );
+    });
+  } catch (error) {
+    console.error("播放音频时发生错误:", error);
+    throw error;
+  }
 };
 
 /**
  * 创建离屏文档（如果尚未创建）
  */
 export const createOffscreenDocumentIfNeeded = async (): Promise<void> => {
-  // 检查是否已存在离屏文档
-  if (await hasOffscreenDocument()) {
-    return;
-  }
+  try {
+    // 检查是否已存在离屏文档
+    if (await hasOffscreenDocument()) {
+      return;
+    }
 
-  // 创建新的离屏文档
-  await chrome.offscreen.createDocument({
-    url: "offscreen.html",
-    reasons: ["AUDIO_PLAYBACK"] as chrome.offscreen.Reason[],
-    justification: "用于播放倒计时结束通知音效",
-  });
+    // 创建新的离屏文档
+    await chrome.offscreen.createDocument({
+      url: "offscreen.html",
+      reasons: ["AUDIO_PLAYBACK"] as chrome.offscreen.Reason[],
+      justification: "用于播放倒计时结束通知音效",
+    });
+
+    // 等待一小段时间，确保离屏文档完全加载
+    await new Promise((resolve) => setTimeout(resolve, 200));
+  } catch (error) {
+    console.error("创建离屏文档时发生错误:", error);
+    throw error;
+  }
 };
 
 /**
