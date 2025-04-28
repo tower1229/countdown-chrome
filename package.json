@@ -1,0 +1,39 @@
+{
+    "name": "countdown-chrome",
+    "version": "1.0.0",
+    "description": "Chrome extension for tab countdown timer",
+    "main": "index.js",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview"
+    },
+    "keywords": [
+        "chrome-extension",
+        "countdown",
+        "timer"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0"
+    },
+    "devDependencies": {
+        "@crxjs/vite-plugin": "^1.0.14",
+        "@types/chrome": "^0.0.317",
+        "@types/react": "^19.1.2",
+        "@types/react-dom": "^19.1.2",
+        "@typescript-eslint/eslint-plugin": "^8.31.0",
+        "@typescript-eslint/parser": "^8.31.0",
+        "@vitejs/plugin-react": "^4.4.1",
+        "autoprefixer": "^10.4.21",
+        "eslint": "^9.25.1",
+        "eslint-plugin-react-hooks": "^5.2.0",
+        "eslint-plugin-react-refresh": "^0.4.20",
+        "postcss": "^8.5.3",
+        "tailwindcss": "^4.1.4",
+        "typescript": "^5.8.3",
+        "vite": "^6.3.3"
+    }
+}
