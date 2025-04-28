@@ -37,7 +37,7 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
     e.preventDefault();
 
     if (hours === 0 && minutes === 0 && seconds === 0) {
-      alert("请设置时间");
+      alert("Please set a time");
       return;
     }
 
@@ -54,7 +54,7 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
     onSave(newTimer);
   };
 
-  // 增加和减少输入值的处理函数
+  // Functions to increase and decrease input values
   const handleIncrement = (
     setter: React.Dispatch<React.SetStateAction<number>>,
     currentValue: number,
@@ -70,7 +70,7 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
     setter(Math.max(0, currentValue - 1));
   };
 
-  // 试听声音
+  // Preview sound
   const handlePreviewSound = (soundName: string) => {
     playNotificationSound(soundName);
   };
@@ -83,14 +83,14 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
             className="font-medium flex-1 text-base text-gray-700 w-20"
             htmlFor="hours-input"
           >
-            小时:
+            Hours:
           </label>
           <div className="join">
             <button
               type="button"
               onClick={() => handleDecrement(setHours, hours)}
               className="btn btn-square join-item"
-              aria-label="减少小时"
+              aria-label="Decrease hours"
             >
               −
             </button>
@@ -101,14 +101,14 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
               min={0}
               max={99}
               label=""
-              ariaLabel="小时输入框，0到99"
+              ariaLabel="Hours input, 0 to 99"
               className="join-item"
             />
             <button
               type="button"
               onClick={() => handleIncrement(setHours, hours, 99)}
               className="btn btn-square join-item"
-              aria-label="增加小时"
+              aria-label="Increase hours"
             >
               +
             </button>
@@ -120,14 +120,14 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
             className="font-medium flex-1 text-base text-gray-700 w-20"
             htmlFor="minutes-input"
           >
-            分钟:
+            Minutes:
           </label>
           <div className="join">
             <button
               type="button"
               onClick={() => handleDecrement(setMinutes, minutes)}
               className="btn btn-square join-item"
-              aria-label="减少分钟"
+              aria-label="Decrease minutes"
             >
               −
             </button>
@@ -138,14 +138,14 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
               min={0}
               max={59}
               label=""
-              ariaLabel="分钟输入框，0到59"
+              ariaLabel="Minutes input, 0 to 59"
               className="join-item"
             />
             <button
               type="button"
               onClick={() => handleIncrement(setMinutes, minutes, 59)}
               className="btn btn-square join-item"
-              aria-label="增加分钟"
+              aria-label="Increase minutes"
             >
               +
             </button>
@@ -157,14 +157,14 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
             className="font-medium flex-1 text-base text-gray-700 w-20"
             htmlFor="seconds-input"
           >
-            秒数:
+            Seconds:
           </label>
           <div className="join">
             <button
               type="button"
               onClick={() => handleDecrement(setSeconds, seconds)}
               className="btn btn-square join-item"
-              aria-label="减少秒数"
+              aria-label="Decrease seconds"
             >
               −
             </button>
@@ -175,14 +175,14 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
               min={0}
               max={59}
               label=""
-              ariaLabel="秒数输入框，0到59"
+              ariaLabel="Seconds input, 0 to 59"
               className="join-item"
             />
             <button
               type="button"
               onClick={() => handleIncrement(setSeconds, seconds, 59)}
               className="btn btn-square join-item"
-              aria-label="增加秒数"
+              aria-label="Increase seconds"
             >
               +
             </button>
@@ -192,7 +192,7 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
 
       <div className="mb-4">
         <label className="font-medium text-sm mb-2 text-gray-700 block">
-          颜色
+          Color
         </label>
         <div className="flex flex-nowrap mt-2 gap-2">
           {DEFAULT_COLORS.map((colorOption) => (
@@ -204,7 +204,7 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
                 color === colorOption ? "ring ring-offset-2" : "btn-ghost"
               }`}
               style={{ backgroundColor: colorOption }}
-              aria-label={`颜色: ${colorOption}`}
+              aria-label={`Color: ${colorOption}`}
             />
           ))}
         </div>
@@ -212,33 +212,33 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
 
       <div className="mb-6">
         <label className="font-medium text-sm mb-2 text-gray-700 block">
-          声音
+          Sound
         </label>
-        <div className="mt-2 grid gap-3 grid-cols-2">
+        <div className="mt-2 flex flex-wrap gap-2">
           {DEFAULT_SOUNDS.map((soundOption) => (
             <div key={soundOption} className="join">
               <button
                 type="button"
                 onClick={() => setSound(soundOption)}
-                className={`btn join-item ${
+                className={`btn btn-sm join-item ${
                   sound === soundOption ? "btn-primary" : "btn-outline"
                 }`}
-                aria-label={`声音: ${soundOption}`}
+                aria-label={`Sound: ${soundOption}`}
               >
                 {soundOption.split(".")[0]}
               </button>
               <button
                 type="button"
                 onClick={() => handlePreviewSound(soundOption)}
-                className={`btn join-item ${
+                className={`btn btn-sm join-item ${
                   sound === soundOption ? "btn-primary" : "btn-outline"
                 }`}
-                aria-label={`试听: ${soundOption}`}
-                title="试听声音"
+                aria-label={`Preview: ${soundOption}`}
+                title="Preview sound"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
+                  className="h-4 w-4"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -255,12 +255,21 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
         </div>
       </div>
 
-      <div className="flex mt-8 gap-3 justify-end">
-        <button type="button" onClick={onCancel} className="btn btn-outline">
-          取消
+      <div className="flex space-x-4 justify-between">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="btn btn-block btn-outline flex-1"
+          aria-label="Cancel"
+        >
+          Cancel
         </button>
-        <button type="submit" className="btn btn-primary">
-          保存
+        <button
+          type="submit"
+          className="btn btn-block btn-primary flex-1"
+          aria-label="Save"
+        >
+          Save
         </button>
       </div>
     </form>

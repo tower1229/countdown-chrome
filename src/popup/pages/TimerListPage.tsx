@@ -25,10 +25,10 @@ const TimerListPage: React.FC<TimerListPageProps> = ({
   onCancel,
   remainingTime,
 }) => {
-  // 按照order字段排序定时器
+  // Sort timers by the order field
   const sortedTimers = [...timers].sort((a, b) => a.order - b.order);
 
-  // 格式化剩余时间
+  // Format remaining time
   const formatRemainingTime = (milliseconds: number): string => {
     const seconds = Math.floor(milliseconds / 1000);
     const hours = Math.floor(seconds / 3600);
@@ -47,7 +47,7 @@ const TimerListPage: React.FC<TimerListPageProps> = ({
         <button
           onClick={onCreateTimer}
           className="btn btn-sm btn-square btn-primary"
-          aria-label="新建定时器"
+          aria-label="Create new timer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +68,9 @@ const TimerListPage: React.FC<TimerListPageProps> = ({
         <div className="rounded-lg bg-blue-50 shadow-sm mb-4 p-4">
           <div className="flex justify-between items-center">
             <div>
-              <div className="font-medium text-sm text-blue-600">正在计时:</div>
+              <div className="font-medium text-sm text-blue-600">
+                Counting down:
+              </div>
               <div className="font-bold text-lg">
                 {formatRemainingTime(remainingTime)}
               </div>
@@ -76,9 +78,9 @@ const TimerListPage: React.FC<TimerListPageProps> = ({
             <button
               onClick={onCancel}
               className="bg-red-500 btn btn-primary hover:bg-red-600"
-              aria-label="取消计时"
+              aria-label="Cancel timer"
             >
-              取消
+              Cancel
             </button>
           </div>
         </div>

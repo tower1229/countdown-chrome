@@ -61,7 +61,7 @@ const TimerItem: React.FC<TimerItemProps> = ({
         <button
           onClick={() => onStart(timer)}
           className="rounded-full text-success p-2.5 transition-colors hover:bg-green-100"
-          aria-label="启动定时器"
+          aria-label="Start timer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +80,7 @@ const TimerItem: React.FC<TimerItemProps> = ({
         <button
           onClick={() => onEdit(timer)}
           className="rounded-full text-info p-2.5 transition-colors hover:bg-blue-100"
-          aria-label="编辑定时器"
+          aria-label="Edit timer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +100,7 @@ const TimerItem: React.FC<TimerItemProps> = ({
         <button
           onClick={() => onDelete(timer.id)}
           className="rounded-full text-error p-2.5 transition-colors hover:bg-red-100"
-          aria-label="删除定时器"
+          aria-label="Delete timer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

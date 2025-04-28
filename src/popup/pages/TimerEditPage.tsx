@@ -18,7 +18,7 @@ const TimerEditPage: React.FC<TimerEditPageProps> = ({
   return (
     <div className="timer-form-container">
       <h1 className="page-title">
-        {isCreatingNew ? "创建定时器" : "编辑定时器"}
+        {isCreatingNew ? "Create Timer" : "Edit Timer"}
       </h1>
 
       <TimerForm

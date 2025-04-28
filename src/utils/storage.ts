@@ -1,7 +1,7 @@
 import { TimerState, TimerSettings, CustomTimer, AppState } from "../types";
 
 /**
- * 获取计时器状态
+ * Get timer state
  */
 export const getTimerState = (): Promise<TimerState | null> => {
   return new Promise((resolve) => {
@@ -12,7 +12,7 @@ export const getTimerState = (): Promise<TimerState | null> => {
 };
 
 /**
- * 保存计时器状态
+ * Save timer state
  */
 export const saveTimerState = (state: TimerState): Promise<void> => {
   return new Promise((resolve) => {
@@ -23,7 +23,7 @@ export const saveTimerState = (state: TimerState): Promise<void> => {
 };
 
 /**
- * 清除计时器状态
+ * Clear timer state
  */
 export const clearTimerState = (): Promise<void> => {
   return new Promise((resolve) => {
@@ -34,7 +34,7 @@ export const clearTimerState = (): Promise<void> => {
 };
 
 /**
- * 获取上次设置
+ * Get last settings
  */
 export const getLastSettings = (): Promise<TimerSettings | null> => {
   return new Promise((resolve) => {
@@ -45,7 +45,7 @@ export const getLastSettings = (): Promise<TimerSettings | null> => {
 };
 
 /**
- * 保存上次设置
+ * Save last settings
  */
 export const saveLastSettings = (settings: TimerSettings): Promise<void> => {
   return new Promise((resolve) => {
@@ -56,7 +56,7 @@ export const saveLastSettings = (settings: TimerSettings): Promise<void> => {
 };
 
 /**
- * 获取所有自定义定时器
+ * Get all custom timers
  */
 export const getCustomTimers = (): Promise<CustomTimer[]> => {
   return new Promise((resolve) => {
@@ -67,7 +67,7 @@ export const getCustomTimers = (): Promise<CustomTimer[]> => {
 };
 
 /**
- * 保存所有自定义定时器
+ * Save all custom timers
  */
 export const saveCustomTimers = (timers: CustomTimer[]): Promise<void> => {
   return new Promise((resolve) => {
@@ -78,7 +78,7 @@ export const saveCustomTimers = (timers: CustomTimer[]): Promise<void> => {
 };
 
 /**
- * 获取单个自定义定时器
+ * Get single custom timer
  */
 export const getCustomTimer = (id: string): Promise<CustomTimer | null> => {
   return new Promise((resolve) => {
@@ -90,7 +90,7 @@ export const getCustomTimer = (id: string): Promise<CustomTimer | null> => {
 };
 
 /**
- * 保存单个自定义定时器
+ * Save single custom timer
  */
 export const saveCustomTimer = async (timer: CustomTimer): Promise<void> => {
   const timers = await getCustomTimers();
@@ -106,7 +106,7 @@ export const saveCustomTimer = async (timer: CustomTimer): Promise<void> => {
 };
 
 /**
- * 删除自定义定时器
+ * Delete custom timer
  */
 export const deleteCustomTimer = async (id: string): Promise<void> => {
   const timers = await getCustomTimers();
@@ -115,7 +115,7 @@ export const deleteCustomTimer = async (id: string): Promise<void> => {
 };
 
 /**
- * 获取应用状态
+ * Get app state
  */
 export const getAppState = (): Promise<AppState> => {
   return new Promise((resolve) => {
@@ -132,7 +132,7 @@ export const getAppState = (): Promise<AppState> => {
 };
 
 /**
- * 保存应用状态
+ * Save app state
  */
 export const saveAppState = (state: AppState): Promise<void> => {
   return new Promise((resolve) => {

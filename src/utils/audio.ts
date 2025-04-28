@@ -1,19 +1,19 @@
 /**
- * 播放通知声音
- * @param soundPath 声音文件路径或URL
- * @param volume 音量，范围 0-1，默认为 1
+ * Play notification sound
+ * @param soundPath Sound file path or URL
+ * @param volume Volume, range 0-1, default is 1
  */
 export const playNotificationSound = (
   soundPath: string,
   volume: number = 1.0
 ): Promise<void> => {
-  // 检查是否在Service Worker环境中
+  // Check if in Service Worker environment
   if (typeof window === "undefined" || typeof Audio === "undefined") {
-    // Service Worker环境，使用offscreen document API播放音频
+    // Service Worker environment, use offscreen document API to play audio
     return playWithOffscreenDocument(soundPath, volume);
   }
 
-  // 浏览器环境中正常使用Audio API
+  // Use Audio API normally in browser environment
   return new Promise((resolve, reject) => {
     try {
       const fullPath = chrome.runtime.getURL(getSoundPath(soundPath));
@@ -28,15 +28,15 @@ export const playNotificationSound = (
         reject(error);
       };
 
-      // 尝试播放音频
+      // Try to play audio
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
-            // 音频开始播放
+            // Audio starts playing
           })
           .catch((error) => {
-            // 可能因用户未交互导致无法自动播放
+            // May fail to autoplay due to user not interacting
             reject(error);
           });
       }
@@ -47,22 +47,22 @@ export const playNotificationSound = (
 };
 
 /**
- * 使用离屏文档播放音频
- * @param soundPath 声音文件路径
- * @param volume 音量
+ * Play audio using offscreen document
+ * @param soundPath Sound file path
+ * @param volume Volume
  */
 export const playWithOffscreenDocument = async (
   soundPath: string,
   volume: number = 1.0
 ): Promise<void> => {
   try {
-    // 确保offscreen文档已创建
+    // Ensure offscreen document is created
     await createOffscreenDocumentIfNeeded();
 
-    // 添加小延迟，确保离屏文档已完全初始化
+    // Add small delay to ensure offscreen document is fully initialized
     await new Promise((resolve) => setTimeout(resolve, 100));
 
-    // 发送消息到offscreen文档播放音频
+    // Send message to offscreen document to play audio
     return new Promise<void>((resolve, reject) => {
       chrome.runtime.sendMessage(
         {
@@ -73,13 +73,13 @@ export const playWithOffscreenDocument = async (
         (_response) => {
           if (chrome.runtime.lastError) {
             console.debug(
-              "离屏文档通信错误:",
+              "Offscreen document communication error:",
               chrome.runtime.lastError.message
             );
-            // 尝试再次创建离屏文档
+            // Try to create offscreen document again
             createOffscreenDocumentIfNeeded()
               .then(() => {
-                // 再次尝试发送消息
+                // Try sending message again
                 chrome.runtime.sendMessage(
                   {
                     type: "PLAY_SOUND",
@@ -103,41 +103,41 @@ export const playWithOffscreenDocument = async (
       );
     });
   } catch (error) {
-    console.error("播放音频时发生错误:", error);
+    console.error("Error occurred while playing audio:", error);
     throw error;
   }
 };
 
 /**
- * 创建离屏文档（如果尚未创建）
+ * Create offscreen document (if not created yet)
  */
 export const createOffscreenDocumentIfNeeded = async (): Promise<void> => {
   try {
-    // 检查是否已存在离屏文档
+    // Check if offscreen document already exists
     if (await hasOffscreenDocument()) {
       return;
     }
 
-    // 创建新的离屏文档
+    // Create new offscreen document
     await chrome.offscreen.createDocument({
       url: "offscreen.html",
       reasons: ["AUDIO_PLAYBACK"] as chrome.offscreen.Reason[],
-      justification: "用于播放倒计时结束通知音效",
+      justification: "For playing countdown completion notification sounds",
     });
 
-    // 等待一小段时间，确保离屏文档完全加载
+    // Wait a short time to ensure offscreen document is fully loaded
     await new Promise((resolve) => setTimeout(resolve, 200));
   } catch (error) {
-    console.error("创建离屏文档时发生错误:", error);
+    console.error("Error occurred while creating offscreen document:", error);
     throw error;
   }
 };
 
 /**
- * 检查离屏文档是否已存在
+ * Check if offscreen document already exists
  */
 export const hasOffscreenDocument = async (): Promise<boolean> => {
-  // Chrome 116+支持getContexts API
+  // Chrome 116+ supports getContexts API
   if ("getContexts" in chrome.runtime) {
     const contexts = await chrome.runtime.getContexts({
       contextTypes: ["OFFSCREEN_DOCUMENT"] as chrome.runtime.ContextType[],
@@ -145,29 +145,29 @@ export const hasOffscreenDocument = async (): Promise<boolean> => {
     });
     return contexts && contexts.length > 0;
   }
-  // 兼容旧版本Chrome
+  // Compatible with older Chrome versions
   else {
     try {
-      // 使用clients API (需要在service worker中)
-      // @ts-ignore - TS可能不认识clients
+      // Use clients API (needs to be in service worker)
+      // @ts-ignore - TS may not recognize clients
       const allClients = await clients.matchAll();
       return allClients.some((client: any) =>
         client.url.includes(chrome.runtime.id + "/offscreen.html")
       );
     } catch (e) {
-      // 如果不在service worker环境中，简单地尝试创建文档
-      // 如果已存在，将会报错
+      // If not in service worker environment, simply try to create document
+      // If it already exists, it will throw an error
       return false;
     }
   }
 };
 
 /**
- * 根据声音名称获取声音文件路径
+ * Get sound file path from sound name
  */
 export const getSoundPath = (fileName: string): string => {
   return `sounds/${fileName}`;
 };
 
-// 默认通知声音路径
+// Default notification sound path
 export const DEFAULT_NOTIFICATION_SOUND = "default.mp3";

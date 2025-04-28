@@ -1,12 +1,12 @@
 /**
- * 从毫秒转换为总秒数
+ * Convert milliseconds to total seconds
  */
 export const millisecondsToSeconds = (milliseconds: number): number => {
   return Math.max(0, Math.floor(milliseconds / 1000));
 };
 
 /**
- * 计算小时、分钟和秒
+ * Calculate hours, minutes and seconds
  */
 export const calculateTimeUnits = (
   totalSeconds: number
@@ -23,7 +23,7 @@ export const calculateTimeUnits = (
 };
 
 /**
- * 计算总秒数
+ * Calculate total seconds
  */
 export const calculateTotalSeconds = (
   hours: number,
@@ -34,7 +34,7 @@ export const calculateTotalSeconds = (
 };
 
 /**
- * 格式化倒计时时间为字符串
+ * Format countdown time as string
  */
 export const formatTime = (milliseconds: number): string => {
   const totalSeconds = millisecondsToSeconds(milliseconds);
@@ -46,7 +46,7 @@ export const formatTime = (milliseconds: number): string => {
 };
 
 /**
- * 格式化时间为字符串 (用于TimerItem组件)
+ * Format time as string (for TimerItem component)
  */
 export const formatTimerItem = (
   hours: number,
@@ -56,22 +56,22 @@ export const formatTimerItem = (
   const parts = [];
 
   if (hours > 0) {
-    parts.push(`${hours}小时`);
+    parts.push(`${hours} hr`);
   }
 
   if (minutes > 0) {
-    parts.push(`${minutes}分钟`);
+    parts.push(`${minutes} min`);
   }
 
   if (seconds > 0 || (hours === 0 && minutes === 0)) {
-    parts.push(`${seconds}秒`);
+    parts.push(`${seconds} sec`);
   }
 
   return parts.join(" ");
 };
 
 /**
- * 格式化定时器时间显示 (比较友好的格式)
+ * Format timer time display (user-friendly format)
  */
 export const formatTimerDisplay = (
   hours: number,
@@ -81,41 +81,41 @@ export const formatTimerDisplay = (
   const parts = [];
 
   if (hours > 0) {
-    parts.push(`${hours}小时`);
+    parts.push(`${hours} hr`);
   }
 
   if (minutes > 0) {
-    parts.push(`${minutes}分钟`);
+    parts.push(`${minutes} min`);
   }
 
   if (seconds > 0 || (hours === 0 && minutes === 0)) {
-    parts.push(`${seconds}秒`);
+    parts.push(`${seconds} sec`);
   }
 
   return parts.join(" ");
 };
 
 /**
- * 创建图标显示的倒计时文本
- * 优化显示格式：
- * - 大于1小时: 显示小时数，例如 "1 h"
- * - 大于1分钟: 显示分钟数，例如 "1 m"
- * - 小于1分钟: 只显示秒数，例如 "59"
+ * Create countdown text for icon display
+ * Optimized display format:
+ * - Greater than 1 hour: show hour count, e.g. "1 h"
+ * - Greater than 1 minute: show minute count, e.g. "1 m"
+ * - Less than 1 minute: show seconds only, e.g. "59"
  */
 export const createIconText = (milliseconds: number): string => {
   const totalSeconds = millisecondsToSeconds(milliseconds);
   const { hours, minutes, seconds } = calculateTimeUnits(totalSeconds);
 
-  // 如果时间超过1小时，只显示小时数和h
+  // If time is over 1 hour, only show hour count and 'h'
   if (hours > 0) {
     return `${hours}h`;
   }
 
-  // 如果时间超过1分钟，只显示分钟数和m
+  // If time is over 1 minute, only show minute count and 'm'
   if (minutes > 0) {
     return `${minutes}m`;
   }
 
-  // 如果时间小于1分钟，只显示秒数
+  // If time is less than 1 minute, only show seconds
   return `${seconds}`;
 };

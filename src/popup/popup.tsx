@@ -21,7 +21,7 @@ import CountdownView from "./components/CountdownView";
 import TimerEditPage from "./pages/TimerEditPage";
 
 const Popup: React.FC = () => {
-  // 通用状态
+  // General state
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
@@ -30,10 +30,10 @@ const Popup: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentColor, setCurrentColor] = useState<string>("#3B82F6");
 
-  // 定时器管理状态
+  // Timer management state
   const [timers, setTimers] = useState<CustomTimer[]>([]);
 
-  // 路由状态
+  // Route state
   const [currentRoute, setCurrentRoute] = useState<Route>("timer-list");
   const [editingTimer, setEditingTimer] = useState<CustomTimer | null>(null);
   const [isCreatingNew, setIsCreatingNew] = useState<boolean>(false);
@@ -41,27 +41,27 @@ const Popup: React.FC = () => {
   const [isCountingDown, setIsCountingDown] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
-  // 重置popup高度
+  // Reset popup height
   const resetPopupHeight = useCallback(() => {
     document.documentElement.style.height = "";
     document.body.style.height = "";
   }, []);
 
-  // 加载应用状态和定时器列表
+  // Load app state and timer list
   useEffect(() => {
     const loadData = async () => {
       try {
-        // 获取定时器列表
+        // Get timer list
         const customTimers = await getCustomTimers();
         setTimers(customTimers);
 
-        // 获取应用状态
+        // Get app state
         const appState = await getAppState();
         setCurrentRoute(appState.route);
         setEditingTimer(appState.editingTimer);
         setIsCreatingNew(appState.isCreatingNew);
 
-        // 获取当前倒计时状态
+        // Get current countdown state
         chrome.storage.local.get(["timerState"], (result) => {
           const state = result.timerState as TimerState | undefined;
           if (state && state.isCountingDown) {
@@ -69,7 +69,7 @@ const Popup: React.FC = () => {
             setRemainingTime(state.endTime - Date.now());
             setTotalTime(state.totalSeconds * 1000);
 
-            // 如果有当前计时器ID，查找并显示相关信息
+            // If there is a current timer ID, find and display related information
             if (state.currentTimerId) {
               const currentTimer = customTimers.find(
                 (t) => t.id === state.currentTimerId
@@ -82,7 +82,7 @@ const Popup: React.FC = () => {
               }
             }
           } else {
-            // 加载上次设置的时间
+            // Load last settings
             chrome.storage.local.get(["lastSettings"], (result) => {
               const settings = result.lastSettings;
               if (settings) {
@@ -96,7 +96,7 @@ const Popup: React.FC = () => {
           setIsLoading(false);
         });
       } catch (error) {
-        console.error("加载应用数据失败:", error);
+        console.error("Failed to load app data:", error);
         setIsLoading(false);
       }
     };
@@ -104,40 +104,40 @@ const Popup: React.FC = () => {
     loadData();
   }, []);
 
-  // 监视倒计时状态变化
+  // Monitor countdown state changes
   useEffect(() => {
     if (!isCountingDown) {
-      // 当倒计时结束或取消时重置高度
+      // Reset height when countdown ends or is cancelled
       resetPopupHeight();
 
-      // 一个小延时，确保高度在DOM更新后重新计算
+      // A small delay to ensure height is recalculated after DOM updates
       setTimeout(() => {
         resetPopupHeight();
       }, 50);
     }
   }, [isCountingDown, resetPopupHeight]);
 
-  // 更新应用状态
+  // Update app state
   const updateAppState = useCallback(async (newState: Partial<AppState>) => {
     try {
       const currentState = await getAppState();
       const updatedState = { ...currentState, ...newState };
       await saveAppState(updatedState);
     } catch (error) {
-      console.error("保存应用状态失败:", error);
+      console.error("Failed to save app state:", error);
     }
   }, []);
 
-  // 监听状态变化
+  // Listen for state changes
   useEffect(() => {
     const handleMessage = (message: any) => {
       if (message.type === "TIMER_UPDATE") {
         setRemainingTime(message.remainingTime);
       } else if (message.type === "TIMER_COMPLETED") {
         setIsCountingDown(false);
-        // 在popup中也尝试播放声音
+        // Try to play sound in popup as well
         playNotificationSound(DEFAULT_NOTIFICATION_SOUND).catch(() => {
-          // 忽略错误
+          // Ignore errors
         });
       } else if (message.type === "TIMER_CANCELLED") {
         setIsCountingDown(false);
@@ -151,7 +151,7 @@ const Popup: React.FC = () => {
     };
   }, []);
 
-  // 更新显示的剩余时间
+  // Update displayed remaining time
   useEffect(() => {
     if (isCountingDown) {
       const interval = setInterval(() => {
@@ -170,7 +170,7 @@ const Popup: React.FC = () => {
     }
   }, [isCountingDown]);
 
-  // 开始计时
+  // Start timer
   const handleStart = useCallback(
     (customTimer?: CustomTimer) => {
       let timerHours, timerMinutes, timerSeconds, timerId;
@@ -197,10 +197,10 @@ const Popup: React.FC = () => {
       const endTime = Date.now() + totalSeconds * 1000;
       const totalMs = totalSeconds * 1000;
 
-      // 设置总时间
+      // Set total time
       setTotalTime(totalMs);
 
-      // 保存上次设置
+      // Save last settings
       chrome.storage.local.set({
         lastSettings: {
           hours: timerHours,
@@ -209,7 +209,7 @@ const Popup: React.FC = () => {
         },
       });
 
-      // 发送消息给后台开始计时，包含自定义定时器信息
+      // Send message to background to start timer, including custom timer info
       chrome.runtime.sendMessage({
         type: "START_TIMER",
         totalSeconds,
@@ -224,24 +224,24 @@ const Popup: React.FC = () => {
     [hours, minutes, seconds]
   );
 
-  // 取消计时
+  // Cancel timer
   const handleCancel = useCallback(() => {
     chrome.runtime.sendMessage({ type: "CANCEL_TIMER" });
     setIsCountingDown(false);
   }, []);
 
-  // 删除定时器
+  // Delete timer
   const handleDeleteTimer = useCallback(async (id: string) => {
     try {
       await deleteCustomTimer(id);
       const updatedTimers = await getCustomTimers();
       setTimers(updatedTimers);
     } catch (error) {
-      console.error("删除定时器失败:", error);
+      console.error("Failed to delete timer:", error);
     }
   }, []);
 
-  // 编辑定时器
+  // Edit timer
   const handleEditTimer = useCallback(
     (timer: CustomTimer) => {
       setCurrentRoute("timer-edit");
@@ -252,13 +252,13 @@ const Popup: React.FC = () => {
         editingTimer: timer,
         isCreatingNew: false,
       });
-      // 当路由更改时重置高度
+      // When route changes, reset height
       resetPopupHeight();
     },
     [updateAppState, resetPopupHeight]
   );
 
-  // 创建新定时器
+  // Create new timer
   const handleCreateTimer = useCallback(() => {
     setCurrentRoute("timer-edit");
     setEditingTimer(null);
@@ -268,11 +268,11 @@ const Popup: React.FC = () => {
       editingTimer: null,
       isCreatingNew: true,
     });
-    // 当路由更改时重置高度
+    // When route changes, reset height
     resetPopupHeight();
   }, [updateAppState, resetPopupHeight]);
 
-  // 处理保存定时器
+  // Handle saving timer
   const handleSaveTimer = useCallback(
     async (timer: CustomTimer) => {
       try {
@@ -285,40 +285,40 @@ const Popup: React.FC = () => {
           editingTimer: null,
           isCreatingNew: false,
         });
-        // 当保存并返回列表时重置高度
+        // When saving and returning to list, reset height
         resetPopupHeight();
       } catch (error) {
-        console.error("保存定时器失败:", error);
+        console.error("Failed to save timer:", error);
       }
     },
     [updateAppState, resetPopupHeight]
   );
 
-  // 重新排序定时器
+  // Reorder timers
   const handleReorderTimers = useCallback(async (newOrder: CustomTimer[]) => {
     try {
       await saveCustomTimers(newOrder);
       setTimers(newOrder);
     } catch (error) {
-      console.error("更新定时器顺序失败:", error);
+      console.error("Failed to update timer order:", error);
     }
   }, []);
 
-  // 返回上一级
+  // Go back one level
   const handleGoBack = useCallback(() => {
     setCurrentRoute("timer-list");
     updateAppState({ route: "timer-list" });
-    // 当返回列表时重置高度
+    // When returning to list, reset height
     resetPopupHeight();
   }, [updateAppState, resetPopupHeight]);
 
   useEffect(() => {
-    // 初始获取倒计时状态
+    // Initial get countdown status
     chrome.runtime.sendMessage({ type: "GET_COUNTDOWN_STATUS" }, (res) => {
       if (res && typeof res.isCountingDown === "boolean")
         setIsCountingDown(res.isCountingDown);
     });
-    // 监听 background 状态变更
+    // Listen for background status changes
     const handleMessage = (msg: any) => {
       if (msg.type === "COUNTDOWN_STATUS_CHANGED")
         setIsCountingDown(msg.isCountingDown);
@@ -327,7 +327,7 @@ const Popup: React.FC = () => {
     return () => chrome.runtime.onMessage.removeListener(handleMessage);
   }, []);
 
-  // 添加路由变化时重置高度的逻辑
+  // Add logic to reset height when route changes
   useEffect(() => {
     resetPopupHeight();
   }, [currentRoute, resetPopupHeight]);
@@ -377,7 +377,7 @@ const Popup: React.FC = () => {
   );
 };
 
-// 渲染应用
+// Render application
 const root = document.getElementById("root");
 if (root) {
   ReactDOM.createRoot(root).render(<Popup />);

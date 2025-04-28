@@ -31,7 +31,7 @@ const CountdownView: React.FC<CountdownViewProps> = ({
     Math.max(0, (remainingTime / actualTotalTime) * 100)
   );
 
-  // 动态调整popup高度
+  // Dynamically adjust popup height
   useEffect(() => {
     const resizeObserver = new ResizeObserver(() => {
       if (containerRef.current) {
@@ -47,7 +47,7 @@ const CountdownView: React.FC<CountdownViewProps> = ({
 
     return () => {
       resizeObserver.disconnect();
-      // 组件卸载时重置高度
+      // Reset height when component unmounts
       document.documentElement.style.height = "";
       document.body.style.height = "";
     };
@@ -58,10 +58,12 @@ const CountdownView: React.FC<CountdownViewProps> = ({
       ref={containerRef}
       className="flex flex-col w-full p-4 items-center justify-center"
       tabIndex={0}
-      aria-label="倒计时进行中"
+      aria-label="Countdown in progress"
       role="region"
     >
-      <h2 className="font-medium text-base mb-1 text-gray-600">正在倒计时</h2>
+      <h2 className="font-medium text-base mb-1 text-gray-600">
+        Counting down
+      </h2>
       <div
         className="font-bold mb-4 text-5xl"
         style={{ color }}
@@ -82,12 +84,12 @@ const CountdownView: React.FC<CountdownViewProps> = ({
         ></div>
       </div>
       <button
-        className="btn btn-error"
+        className="btn"
         onClick={onCancel}
         tabIndex={0}
-        aria-label="取消倒计时"
+        aria-label="Cancel countdown"
       >
-        取消
+        Cancel
       </button>
     </div>
   );

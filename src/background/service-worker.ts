@@ -11,37 +11,39 @@ import {
   playWithOffscreenDocument,
 } from "../utils/audio";
 
-// 更新图标和发送消息的间隔
-const UPDATE_INTERVAL = 1000; // 1秒
+// Interval for updating the icon and sending messages
+const UPDATE_INTERVAL = 1000; // 1 second
 
 let isCountingDown = false;
-// 追踪已知活跃的内容脚本
+// Track known active content scripts
 const activeContentScriptTabs = new Set<number>();
 
-// 添加内容脚本状态处理
+// Handle content script status
 chrome.runtime.onMessage.addListener((message, sender) => {
   const tabId = sender.tab?.id;
   if (message.type === "CONTENT_SCRIPT_LOADED" && typeof tabId === "number") {
-    console.debug(`内容脚本已在标签页 ${tabId} 加载`);
+    console.debug(`Content script loaded in tab ${tabId}`);
     activeContentScriptTabs.add(tabId);
   }
 });
 
-// 检测标签页关闭，从活跃内容脚本集合中移除
+// Detect tab close, remove from active content scripts set
 chrome.tabs.onRemoved.addListener((tabId) => {
   if (activeContentScriptTabs.has(tabId)) {
     activeContentScriptTabs.delete(tabId);
-    console.debug(`标签页 ${tabId} 已关闭，从活跃内容脚本集合中移除`);
+    console.debug(
+      `Tab ${tabId} closed, removed from active content scripts set`
+    );
   }
 });
 
-// 计时器更新函数
+// Timer update function
 const updateTimer = async () => {
   try {
     const state = await getTimerState();
 
     if (!state || !state.isCountingDown) {
-      // 没有运行中的倒计时，确保恢复默认图标
+      // No active countdown, ensure default icon is restored
       isCountingDown = false;
       await restoreDefaultIcon();
       return;
@@ -52,66 +54,70 @@ const updateTimer = async () => {
     const now = Date.now();
     const remainingTime = state.endTime - now;
 
-    // 发送更新消息给popup
+    // Send update message to popup
     try {
       chrome.runtime.sendMessage({
         type: "TIMER_UPDATE",
         remainingTime,
       });
     } catch (error) {
-      console.debug("发送TIMER_UPDATE消息失败，可能没有活跃的接收方");
+      console.debug(
+        "Failed to send TIMER_UPDATE message, possibly no active receivers"
+      );
     }
 
-    // 更新图标显示
+    // Update icon display
     const timeText = createIconText(remainingTime);
     await setExtensionIcon(timeText);
 
-    // 检查倒计时是否结束
+    // Check if countdown is finished
     if (remainingTime <= 0) {
       await completeTimer();
     }
   } catch (error) {
-    console.error("计时器更新错误:", error);
+    console.error("Timer update error:", error);
   }
 };
 
-// 获取当前计时器的声音设置
+// Get current timer sound setting
 const getCurrentTimerSound = async (): Promise<string> => {
   const state = await getTimerState();
   return state?.sound || DEFAULT_NOTIFICATION_SOUND;
 };
 
-// 计时器完成函数
+// Timer completion function
 const completeTimer = async () => {
   try {
-    // 获取当前计时器的声音设置
+    // Get current timer sound setting
     const sound = await getCurrentTimerSound();
 
-    // 清除计时器状态
+    // Clear timer state
     await clearTimerState();
 
-    // 恢复默认图标
+    // Restore default icon
     await restoreDefaultIcon();
 
-    // 发送消息给popup（如果存在）
+    // Send message to popup (if exists)
     try {
       chrome.runtime.sendMessage({ type: "TIMER_COMPLETED" });
     } catch (error) {
-      // 忽略错误，可能是因为没有活跃的接收方
-      console.debug("发送TIMER_COMPLETED消息失败，可能没有活跃的接收方");
+      // Ignore errors, may be due to no active receivers
+      console.debug(
+        "Failed to send TIMER_COMPLETED message, possibly no active receivers"
+      );
     }
 
-    // 显示通知
-    showNotification("倒计时结束", "您设置的倒计时已经结束");
+    // Show notification
+    showNotification("Countdown Finished", "Your countdown timer has finished");
 
-    // 使用离屏文档播放声音
+    // Play sound using offscreen document
     try {
       await playWithOffscreenDocument(sound, 0.8);
     } catch (error) {
-      console.debug("使用离屏文档播放声音失败:", error);
-      // 备选方案: 尝试通过内容脚本播放声音
+      console.debug("Failed to play sound using offscreen document:", error);
+      // Fallback: attempt to play sound via content scripts
 
-      // 首先检查我们已知的活跃内容脚本
+      // First check our known active content scripts
       let soundPlayed = false;
       if (activeContentScriptTabs.size > 0) {
         for (const tabId of activeContentScriptTabs) {
@@ -125,23 +131,23 @@ const completeTimer = async () => {
               (response) => {
                 if (chrome.runtime.lastError) {
                   console.debug(
-                    `无法在标签页 ${tabId} 播放声音:`,
+                    `Unable to play sound in tab ${tabId}:`,
                     chrome.runtime.lastError.message
                   );
-                  activeContentScriptTabs.delete(tabId); // 移除无响应的标签页
+                  activeContentScriptTabs.delete(tabId); // Remove non-responsive tab
                 } else if (response?.success) {
-                  console.debug(`成功在标签页 ${tabId} 播放声音`);
+                  console.debug(`Successfully played sound in tab ${tabId}`);
                   soundPlayed = true;
                 }
               }
             );
           } catch (error) {
-            console.debug(`向标签页 ${tabId} 发送消息时出错:`, error);
+            console.debug(`Error sending message to tab ${tabId}:`, error);
           }
         }
       }
 
-      // 如果没有成功通过已知标签页播放，尝试查询所有标签页
+      // If we didn't successfully play through known tabs, try querying all tabs
       if (!soundPlayed) {
         chrome.tabs.query({}, (tabs) => {
           for (const tab of tabs) {
@@ -160,12 +166,12 @@ const completeTimer = async () => {
                 (response) => {
                   if (chrome.runtime.lastError) {
                     console.debug(
-                      `无法在标签页 ${tabId} 播放声音:`,
+                      `Unable to play sound in tab ${tabId}:`,
                       chrome.runtime.lastError.message
                     );
                   } else if (response?.success) {
-                    console.debug(`成功在标签页 ${tabId} 播放声音`);
-                    activeContentScriptTabs.add(tabId); // 添加到已知活跃标签页
+                    console.debug(`Successfully played sound in tab ${tabId}`);
+                    activeContentScriptTabs.add(tabId); // Add to known active tabs
                   }
                 }
               );
@@ -175,11 +181,11 @@ const completeTimer = async () => {
       }
     }
   } catch (error) {
-    console.error("计时器完成错误:", error);
+    console.error("Timer completion error:", error);
   }
 };
 
-// 显示通知
+// Show notification
 const showNotification = (title: string, message: string) => {
   chrome.notifications.create({
     type: "basic",
@@ -190,7 +196,7 @@ const showNotification = (title: string, message: string) => {
   });
 };
 
-// 处理消息
+// Handle messages
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   try {
     if (message.type === "GET_COUNTDOWN_STATUS") {
@@ -198,54 +204,56 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       return true;
     }
     if (message.type === "START_TIMER") {
-      // 保存计时器状态
+      // Save timer state
       const timerState: TimerState = {
         isCountingDown: true,
         endTime: message.endTime,
         totalSeconds: message.totalSeconds,
-        currentTimerId: message.currentTimerId, // 保存当前定时器ID
-        sound: message.sound || DEFAULT_NOTIFICATION_SOUND, // 保存声音设置
+        currentTimerId: message.currentTimerId, // Save current timer ID
+        sound: message.sound || DEFAULT_NOTIFICATION_SOUND, // Save sound setting
       };
 
       saveTimerState(timerState).then(() => {
-        // 立即更新一次
+        // Update immediately once
         updateTimer();
         sendResponse({ success: true });
       });
 
-      return true; // 异步响应
+      return true; // Asynchronous response
     } else if (message.type === "CANCEL_TIMER") {
       clearTimerState().then(() => {
-        // 恢复默认图标
+        // Restore default icon
         restoreDefaultIcon();
-        // 尝试发送消息，但忽略错误
+        // Try to send message, but ignore errors
         try {
           chrome.runtime.sendMessage({ type: "TIMER_CANCELLED" });
         } catch (error) {
-          console.debug("发送TIMER_CANCELLED消息失败，可能没有活跃的接收方");
+          console.debug(
+            "Failed to send TIMER_CANCELLED message, possibly no active receivers"
+          );
         }
         sendResponse({ success: true });
       });
 
-      return true; // 异步响应
+      return true; // Asynchronous response
     } else if (message.type === "AUDIO_ENDED") {
-      // 可能需要在此处进行一些清理工作
-      // 例如，在不再需要时关闭离屏文档
-      console.log("音频播放完成");
+      // May need to do some cleanup here
+      // For example, close the offscreen document when no longer needed
+      console.log("Audio playback completed");
     }
   } catch (error) {
-    console.error("消息处理错误:", error);
+    console.error("Message handling error:", error);
     sendResponse({ success: false, error: String(error) });
   }
 });
 
-// 定时更新计时器
+// Update timer at regular intervals
 setInterval(updateTimer, UPDATE_INTERVAL);
 
-// 扩展安装或更新时初始化
+// Initialize on extension installation or update
 chrome.runtime.onInstalled.addListener(() => {
-  // 重置状态
+  // Reset state
   clearTimerState();
-  // 确保使用默认图标
+  // Ensure default icon is used
   restoreDefaultIcon();
 });
