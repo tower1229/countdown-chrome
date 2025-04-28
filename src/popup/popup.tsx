@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ReactDOM from "react-dom/client";
 import "../utils/index.css";
-import { TimerState, CustomTimer, AppState } from "../types";
+import { TimerState, CustomTimer, AppState, Route } from "../types";
 import { calculateTotalSeconds } from "../utils/timer";
 import {
   playNotificationSound,
@@ -13,9 +13,11 @@ import {
   saveCustomTimers,
   getAppState,
   saveAppState,
+  saveCustomTimer,
 } from "../utils/storage";
 import TimerListPage from "./pages/TimerListPage";
 import CountdownView from "./components/CountdownView";
+import TimerEditPage from "./pages/TimerEditPage";
 
 const Popup: React.FC = () => {
   // 通用状态
@@ -29,6 +31,11 @@ const Popup: React.FC = () => {
   // 定时器管理状态
   const [timers, setTimers] = useState<CustomTimer[]>([]);
 
+  // 路由状态
+  const [currentRoute, setCurrentRoute] = useState<Route>("timer-list");
+  const [editingTimer, setEditingTimer] = useState<CustomTimer | null>(null);
+  const [isCreatingNew, setIsCreatingNew] = useState<boolean>(false);
+
   const [isCountingDown, setIsCountingDown] = useState(false);
 
   // 加载应用状态和定时器列表
@@ -38,6 +45,12 @@ const Popup: React.FC = () => {
         // 获取定时器列表
         const customTimers = await getCustomTimers();
         setTimers(customTimers);
+
+        // 获取应用状态
+        const appState = await getAppState();
+        setCurrentRoute(appState.route);
+        setEditingTimer(appState.editingTimer);
+        setIsCreatingNew(appState.isCreatingNew);
 
         // 获取当前倒计时状态
         chrome.storage.local.get(["timerState"], (result) => {
@@ -202,6 +215,9 @@ const Popup: React.FC = () => {
   // 编辑定时器
   const handleEditTimer = useCallback(
     (timer: CustomTimer) => {
+      setCurrentRoute("timer-edit");
+      setEditingTimer(timer);
+      setIsCreatingNew(false);
       updateAppState({
         route: "timer-edit",
         editingTimer: timer,
@@ -213,10 +229,43 @@ const Popup: React.FC = () => {
 
   // 创建新定时器
   const handleCreateTimer = useCallback(() => {
+    setCurrentRoute("timer-edit");
+    setEditingTimer(null);
+    setIsCreatingNew(true);
     updateAppState({
       route: "timer-edit",
       editingTimer: null,
       isCreatingNew: true,
+    });
+  }, [updateAppState]);
+
+  // 处理保存定时器
+  const handleSaveTimer = useCallback(
+    async (timer: CustomTimer) => {
+      try {
+        await saveCustomTimer(timer);
+        const updatedTimers = await getCustomTimers();
+        setTimers(updatedTimers);
+        setCurrentRoute("timer-list");
+        updateAppState({
+          route: "timer-list",
+          editingTimer: null,
+          isCreatingNew: false,
+        });
+      } catch (error) {
+        console.error("保存定时器失败:", error);
+      }
+    },
+    [updateAppState]
+  );
+
+  // 处理取消编辑
+  const handleCancelEdit = useCallback(() => {
+    setCurrentRoute("timer-list");
+    updateAppState({
+      route: "timer-list",
+      editingTimer: null,
+      isCreatingNew: false,
     });
   }, [updateAppState]);
 
@@ -256,21 +305,35 @@ const Popup: React.FC = () => {
     );
   }
 
-  return isCountingDown ? (
-    <CountdownView remainingTime={remainingTime} onCancel={handleCancel} />
-  ) : (
-    <TimerListPage
-      timers={timers}
-      onCreateTimer={handleCreateTimer}
-      onStartTimer={handleStart}
-      onEditTimer={handleEditTimer}
-      onDeleteTimer={handleDeleteTimer}
-      onReorderTimers={handleReorderTimers}
-      isRunning={isRunning}
-      onCancel={handleCancel}
-      remainingTime={remainingTime}
-    />
-  );
+  // 根据路由状态显示不同的页面
+  if (isCountingDown) {
+    return (
+      <CountdownView remainingTime={remainingTime} onCancel={handleCancel} />
+    );
+  } else if (currentRoute === "timer-edit") {
+    return (
+      <TimerEditPage
+        timer={editingTimer}
+        onSave={handleSaveTimer}
+        onCancel={handleCancelEdit}
+        isCreatingNew={isCreatingNew}
+      />
+    );
+  } else {
+    return (
+      <TimerListPage
+        timers={timers}
+        onCreateTimer={handleCreateTimer}
+        onStartTimer={handleStart}
+        onEditTimer={handleEditTimer}
+        onDeleteTimer={handleDeleteTimer}
+        onReorderTimers={handleReorderTimers}
+        isRunning={isRunning}
+        onCancel={handleCancel}
+        remainingTime={remainingTime}
+      />
+    );
+  }
 };
 
 const root = ReactDOM.createRoot(
