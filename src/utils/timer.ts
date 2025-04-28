@@ -46,6 +46,56 @@ export const formatTime = (milliseconds: number): string => {
 };
 
 /**
+ * 格式化时间为字符串 (用于TimerItem组件)
+ */
+export const formatTimerItem = (
+  hours: number,
+  minutes: number,
+  seconds: number
+): string => {
+  const parts = [];
+
+  if (hours > 0) {
+    parts.push(`${hours}小时`);
+  }
+
+  if (minutes > 0) {
+    parts.push(`${minutes}分钟`);
+  }
+
+  if (seconds > 0 || (hours === 0 && minutes === 0)) {
+    parts.push(`${seconds}秒`);
+  }
+
+  return parts.join(" ");
+};
+
+/**
+ * 格式化定时器时间显示 (比较友好的格式)
+ */
+export const formatTimerDisplay = (
+  hours: number,
+  minutes: number,
+  seconds: number
+): string => {
+  const parts = [];
+
+  if (hours > 0) {
+    parts.push(`${hours}小时`);
+  }
+
+  if (minutes > 0) {
+    parts.push(`${minutes}分钟`);
+  }
+
+  if (seconds > 0 || (hours === 0 && minutes === 0)) {
+    parts.push(`${seconds}秒`);
+  }
+
+  return parts.join(" ");
+};
+
+/**
  * 创建图标显示的倒计时文本
  * 优化显示格式：
  * - 大于1小时: 显示小时数，例如 "1 h"

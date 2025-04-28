@@ -1,14 +1,25 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ReactDOM from "react-dom/client";
 import "../utils/index.css";
-import { TimerState } from "../types";
-import { formatTime, calculateTotalSeconds } from "../utils/timer";
+import { TimerState, CustomTimer, AppState, Route } from "../types";
+import { calculateTotalSeconds } from "../utils/timer";
 import {
   playNotificationSound,
   DEFAULT_NOTIFICATION_SOUND,
 } from "../utils/audio";
+import {
+  getCustomTimers,
+  saveCustomTimer,
+  deleteCustomTimer,
+  saveCustomTimers,
+  getAppState,
+  saveAppState,
+} from "../utils/storage";
+import TimerListPage from "./pages/TimerListPage";
+import TimerEditPage from "./pages/TimerEditPage";
 
 const Popup: React.FC = () => {
+  // 通用状态
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
@@ -16,29 +27,80 @@ const Popup: React.FC = () => {
   const [remainingTime, setRemainingTime] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // 定时器管理状态
+  const [timers, setTimers] = useState<CustomTimer[]>([]);
+  const [currentRoute, setCurrentRoute] = useState<Route>("timer-list");
+  const [editingTimer, setEditingTimer] = useState<CustomTimer | null>(null);
+  const [isCreatingNew, setIsCreatingNew] = useState<boolean>(false);
+
+  // 加载应用状态和定时器列表
   useEffect(() => {
-    // 获取当前倒计时状态
-    chrome.storage.local.get(["timerState"], (result) => {
-      const state = result.timerState as TimerState | undefined;
-      if (state && state.isRunning) {
-        setIsRunning(true);
-        setRemainingTime(state.endTime - Date.now());
-      } else {
-        // 加载上次设置的时间
-        chrome.storage.local.get(["lastSettings"], (result) => {
-          const settings = result.lastSettings;
-          if (settings) {
-            setHours(settings.hours || 0);
-            setMinutes(settings.minutes || 0);
-            setSeconds(settings.seconds || 0);
+    const loadData = async () => {
+      try {
+        // 获取应用状态
+        const appState = await getAppState();
+        setCurrentRoute(appState.route);
+        setEditingTimer(appState.editingTimer);
+        setIsCreatingNew(appState.isCreatingNew);
+
+        // 获取定时器列表
+        const customTimers = await getCustomTimers();
+        setTimers(customTimers);
+
+        // 获取当前倒计时状态
+        chrome.storage.local.get(["timerState"], (result) => {
+          const state = result.timerState as TimerState | undefined;
+          if (state && state.isRunning) {
+            setIsRunning(true);
+            setRemainingTime(state.endTime - Date.now());
+
+            // 如果有当前计时器ID，查找并显示相关信息
+            if (state.currentTimerId) {
+              const currentTimer = customTimers.find(
+                (t) => t.id === state.currentTimerId
+              );
+              if (currentTimer) {
+                setHours(currentTimer.hours);
+                setMinutes(currentTimer.minutes);
+                setSeconds(currentTimer.seconds);
+              }
+            }
+          } else {
+            // 加载上次设置的时间
+            chrome.storage.local.get(["lastSettings"], (result) => {
+              const settings = result.lastSettings;
+              if (settings) {
+                setHours(settings.hours || 0);
+                setMinutes(settings.minutes || 0);
+                setSeconds(settings.seconds || 0);
+              }
+              setIsLoading(false);
+            });
           }
           setIsLoading(false);
         });
+      } catch (error) {
+        console.error("加载应用数据失败:", error);
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    });
+    };
 
-    // 监听状态变化
+    loadData();
+  }, []);
+
+  // 更新应用状态
+  const updateAppState = useCallback(async (newState: Partial<AppState>) => {
+    try {
+      const currentState = await getAppState();
+      const updatedState = { ...currentState, ...newState };
+      await saveAppState(updatedState);
+    } catch (error) {
+      console.error("保存应用状态失败:", error);
+    }
+  }, []);
+
+  // 监听状态变化
+  useEffect(() => {
     const handleMessage = (message: any) => {
       if (message.type === "TIMER_UPDATE") {
         setRemainingTime(message.remainingTime);
@@ -79,72 +141,144 @@ const Popup: React.FC = () => {
     }
   }, [isRunning]);
 
-  const handleStart = useCallback(() => {
-    const totalSeconds = calculateTotalSeconds(hours, minutes, seconds);
-    if (totalSeconds <= 0) return;
+  // 开始计时
+  const handleStart = useCallback(
+    (customTimer?: CustomTimer) => {
+      let timerHours, timerMinutes, timerSeconds, timerId;
 
-    const endTime = Date.now() + totalSeconds * 1000;
+      if (customTimer) {
+        timerHours = customTimer.hours;
+        timerMinutes = customTimer.minutes;
+        timerSeconds = customTimer.seconds;
+        timerId = customTimer.id;
+      } else {
+        timerHours = hours;
+        timerMinutes = minutes;
+        timerSeconds = seconds;
+      }
 
-    // 保存上次设置
-    chrome.storage.local.set({
-      lastSettings: { hours, minutes, seconds },
-    });
+      const totalSeconds = calculateTotalSeconds(
+        timerHours,
+        timerMinutes,
+        timerSeconds
+      );
+      if (totalSeconds <= 0) return;
 
-    // 发送消息给后台开始计时
-    chrome.runtime.sendMessage({
-      type: "START_TIMER",
-      totalSeconds,
-      endTime,
-    });
+      const endTime = Date.now() + totalSeconds * 1000;
 
-    setIsRunning(true);
-    setRemainingTime(totalSeconds * 1000);
-  }, [hours, minutes, seconds]);
+      // 保存上次设置
+      chrome.storage.local.set({
+        lastSettings: {
+          hours: timerHours,
+          minutes: timerMinutes,
+          seconds: timerSeconds,
+        },
+      });
 
+      // 发送消息给后台开始计时，包含自定义定时器信息
+      chrome.runtime.sendMessage({
+        type: "START_TIMER",
+        totalSeconds,
+        endTime,
+        currentTimerId: timerId,
+        sound: customTimer?.sound || DEFAULT_NOTIFICATION_SOUND,
+      });
+
+      setIsRunning(true);
+      setRemainingTime(totalSeconds * 1000);
+    },
+    [hours, minutes, seconds]
+  );
+
+  // 取消计时
   const handleCancel = useCallback(() => {
     chrome.runtime.sendMessage({ type: "CANCEL_TIMER" });
     setIsRunning(false);
   }, []);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setter: React.Dispatch<React.SetStateAction<number>>
-  ) => {
-    const value = parseInt(e.target.value) || 0;
-    setter(Math.max(0, value));
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      if (!isRunning) {
-        handleStart();
-      } else {
-        handleCancel();
+  // 保存定时器
+  const handleSaveTimer = useCallback(
+    async (timer: CustomTimer) => {
+      try {
+        await saveCustomTimer(timer);
+        const updatedTimers = await getCustomTimers();
+        setTimers(updatedTimers);
+        setCurrentRoute("timer-list");
+        updateAppState({
+          route: "timer-list",
+          editingTimer: null,
+          isCreatingNew: false,
+        });
+      } catch (error) {
+        console.error("保存定时器失败:", error);
       }
+    },
+    [updateAppState]
+  );
+
+  // 删除定时器
+  const handleDeleteTimer = useCallback(async (id: string) => {
+    try {
+      await deleteCustomTimer(id);
+      const updatedTimers = await getCustomTimers();
+      setTimers(updatedTimers);
+    } catch (error) {
+      console.error("删除定时器失败:", error);
     }
-  };
+  }, []);
 
-  // 增加和减少输入值的处理函数
-  const handleIncrement = (
-    setter: React.Dispatch<React.SetStateAction<number>>,
-    currentValue: number,
-    max: number = Infinity
-  ) => {
-    setter(Math.min(max, currentValue + 1));
-  };
+  // 编辑定时器
+  const handleEditTimer = useCallback(
+    (timer: CustomTimer) => {
+      setEditingTimer(timer);
+      setIsCreatingNew(false);
+      setCurrentRoute("timer-edit");
+      updateAppState({
+        route: "timer-edit",
+        editingTimer: timer,
+        isCreatingNew: false,
+      });
+    },
+    [updateAppState]
+  );
 
-  const handleDecrement = (
-    setter: React.Dispatch<React.SetStateAction<number>>,
-    currentValue: number
-  ) => {
-    setter(Math.max(0, currentValue - 1));
-  };
+  // 创建新定时器
+  const handleCreateTimer = useCallback(() => {
+    setEditingTimer(null);
+    setIsCreatingNew(true);
+    setCurrentRoute("timer-edit");
+    updateAppState({
+      route: "timer-edit",
+      editingTimer: null,
+      isCreatingNew: true,
+    });
+  }, [updateAppState]);
+
+  // 取消编辑/创建
+  const handleCancelEdit = useCallback(() => {
+    setCurrentRoute("timer-list");
+    updateAppState({
+      route: "timer-list",
+      editingTimer: null,
+      isCreatingNew: false,
+    });
+  }, [updateAppState]);
+
+  // 重新排序定时器
+  const handleReorderTimers = useCallback(async (newOrder: CustomTimer[]) => {
+    try {
+      await saveCustomTimers(newOrder);
+      setTimers(newOrder);
+    } catch (error) {
+      console.error("更新定时器顺序失败:", error);
+    }
+  }, []);
 
   if (isLoading) {
     return (
-      <div className="w-64 p-4 bg-white flex items-center justify-center h-32">
+      <div className="bg-white flex h-32 p-4 w-80 items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+          <div className="rounded-full mx-auto border-b-2 border-blue-500 h-8 animate-spin w-8"></div>
           <p className="mt-2 text-gray-600">加载中...</p>
         </div>
       </div>
@@ -152,133 +286,26 @@ const Popup: React.FC = () => {
   }
 
   return (
-    <div className="w-64 p-4 bg-white" onKeyDown={handleKeyDown} tabIndex={0}>
-      <h1 className="text-xl font-bold mb-4 text-center">
-        Tab Countdown Timer
-      </h1>
-
-      {!isRunning ? (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <label htmlFor="hours-input" className="w-20">
-              Hours:
-            </label>
-            <div className="flex items-center">
-              <button
-                type="button"
-                onClick={() => handleDecrement(setHours, hours)}
-                className="px-2 py-1 bg-gray-200 rounded-l-sm hover:bg-gray-300 focus:outline-none"
-                aria-label="减少小时"
-              >
-                -
-              </button>
-              <input
-                id="hours-input"
-                type="number"
-                min="0"
-                value={hours}
-                onChange={(e) => handleInputChange(e, setHours)}
-                className="w-12 p-1 border text-center"
-                aria-label="小时"
-              />
-              <button
-                type="button"
-                onClick={() => handleIncrement(setHours, hours)}
-                className="px-2 py-1 bg-gray-200 rounded-r-sm hover:bg-gray-300 focus:outline-none"
-                aria-label="增加小时"
-              >
-                +
-              </button>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <label htmlFor="minutes-input" className="w-20">
-              Minutes:
-            </label>
-            <div className="flex items-center">
-              <button
-                type="button"
-                onClick={() => handleDecrement(setMinutes, minutes)}
-                className="px-2 py-1 bg-gray-200 rounded-l-sm hover:bg-gray-300 focus:outline-none"
-                aria-label="减少分钟"
-              >
-                -
-              </button>
-              <input
-                id="minutes-input"
-                type="number"
-                min="0"
-                max="59"
-                value={minutes}
-                onChange={(e) => handleInputChange(e, setMinutes)}
-                className="w-12 p-1 border text-center"
-                aria-label="分钟"
-              />
-              <button
-                type="button"
-                onClick={() => handleIncrement(setMinutes, minutes, 59)}
-                className="px-2 py-1 bg-gray-200 rounded-r-sm hover:bg-gray-300 focus:outline-none"
-                aria-label="增加分钟"
-              >
-                +
-              </button>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <label htmlFor="seconds-input" className="w-20">
-              Seconds:
-            </label>
-            <div className="flex items-center">
-              <button
-                type="button"
-                onClick={() => handleDecrement(setSeconds, seconds)}
-                className="px-2 py-1 bg-gray-200 rounded-l-sm hover:bg-gray-300 focus:outline-none"
-                aria-label="减少秒数"
-              >
-                -
-              </button>
-              <input
-                id="seconds-input"
-                type="number"
-                min="0"
-                max="59"
-                value={seconds}
-                onChange={(e) => handleInputChange(e, setSeconds)}
-                className="w-12 p-1 border text-center"
-                aria-label="秒数"
-              />
-              <button
-                type="button"
-                onClick={() => handleIncrement(setSeconds, seconds, 59)}
-                className="px-2 py-1 bg-gray-200 rounded-r-sm hover:bg-gray-300 focus:outline-none"
-                aria-label="增加秒数"
-              >
-                +
-              </button>
-            </div>
-          </div>
-
-          <button
-            onClick={handleStart}
-            className="w-full p-2 mt-2 bg-blue-500 text-white rounded-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            aria-label="开始倒计时"
-          >
-            Start Countdown
-          </button>
-        </div>
+    <div className="bg-white p-4 w-80">
+      {currentRoute === "timer-list" ? (
+        <TimerListPage
+          timers={timers}
+          onCreateTimer={handleCreateTimer}
+          onStartTimer={handleStart}
+          onEditTimer={handleEditTimer}
+          onDeleteTimer={handleDeleteTimer}
+          onReorderTimers={handleReorderTimers}
+          isRunning={isRunning}
+          onCancel={handleCancel}
+          remainingTime={remainingTime}
+        />
       ) : (
-        <div className="text-center space-y-4">
-          <p className="text-2xl font-bold">{formatTime(remainingTime)}</p>
-          <button
-            onClick={handleCancel}
-            className="w-full p-2 bg-red-500 text-white rounded-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
-            aria-label="取消倒计时"
-          >
-            Cancel
-          </button>
-        </div>
+        <TimerEditPage
+          timer={editingTimer}
+          onSave={handleSaveTimer}
+          onCancel={handleCancelEdit}
+          isCreatingNew={isCreatingNew}
+        />
       )}
     </div>
   );

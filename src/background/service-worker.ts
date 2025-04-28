@@ -47,9 +47,18 @@ const updateTimer = async () => {
   }
 };
 
+// 获取当前计时器的声音设置
+const getCurrentTimerSound = async (): Promise<string> => {
+  const state = await getTimerState();
+  return state?.sound || DEFAULT_NOTIFICATION_SOUND;
+};
+
 // 计时器完成函数
 const completeTimer = async () => {
   try {
+    // 获取当前计时器的声音设置
+    const sound = await getCurrentTimerSound();
+
     // 清除计时器状态
     await clearTimerState();
 
@@ -64,7 +73,7 @@ const completeTimer = async () => {
 
     // 使用离屏文档播放声音
     try {
-      await playWithOffscreenDocument(DEFAULT_NOTIFICATION_SOUND, 0.8);
+      await playWithOffscreenDocument(sound, 0.8);
     } catch (error) {
       console.error("播放通知声音失败:", error);
 
@@ -76,7 +85,7 @@ const completeTimer = async () => {
               tab.id,
               {
                 type: "PLAY_SOUND",
-                soundPath: DEFAULT_NOTIFICATION_SOUND,
+                soundPath: sound,
               },
               () => {
                 // 忽略错误，chrome.runtime.lastError 会自动处理
@@ -111,6 +120,8 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         isRunning: true,
         endTime: message.endTime,
         totalSeconds: message.totalSeconds,
+        currentTimerId: message.currentTimerId, // 保存当前定时器ID
+        sound: message.sound || DEFAULT_NOTIFICATION_SOUND, // 保存声音设置
       };
 
       saveTimerState(timerState).then(() => {

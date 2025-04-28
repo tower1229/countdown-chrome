@@ -16,7 +16,7 @@ export const playNotificationSound = (
   // 浏览器环境中正常使用Audio API
   return new Promise((resolve, reject) => {
     try {
-      const fullPath = chrome.runtime.getURL(soundPath);
+      const fullPath = chrome.runtime.getURL(getSoundPath(soundPath));
       const audio = new Audio(fullPath);
       audio.volume = volume;
 
@@ -63,7 +63,7 @@ export const playWithOffscreenDocument = async (
     chrome.runtime.sendMessage(
       {
         type: "PLAY_SOUND",
-        soundPath,
+        soundPath: getSoundPath(soundPath),
         volume,
       },
       (_response) => {
@@ -123,5 +123,25 @@ export const hasOffscreenDocument = async (): Promise<boolean> => {
   }
 };
 
-// 默认通知声音路径
-export const DEFAULT_NOTIFICATION_SOUND = "sounds/notification.mp3";
+/**
+ * 根据声音名称获取声音文件路径
+ */
+export const getSoundPath = (sound: string): string => {
+  switch (sound) {
+    case "bell":
+      return SOUND_BELL;
+    case "chime":
+      return SOUND_CHIME;
+    case "alarm":
+      return SOUND_ALARM;
+    case "default":
+    default:
+      return DEFAULT_NOTIFICATION_SOUND;
+  }
+};
+
+// 声音文件路径定义
+export const DEFAULT_NOTIFICATION_SOUND = "sounds/default.mp3";
+export const SOUND_BELL = "sounds/bell.mp3";
+export const SOUND_CHIME = "sounds/chime.mp3";
+export const SOUND_ALARM = "sounds/alarm.mp3";
