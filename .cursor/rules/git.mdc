@@ -1,0 +1,47 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+description: Git 提交规范和工作流程
+globs: .gitignore, .git/**/*
+alwaysApply: true
+
+# Git 规范
+
+## 提交信息格式
+格式：`<type>(<scope>): <subject>`
+
+### Type 类型
+- feat: 新功能
+- fix: 修复 bug
+- docs: 文档更新
+- style: 代码格式调整
+- refactor: 重构代码
+- test: 添加测试
+- chore: 构建过程或辅助工具的变动
+
+### Scope 范围
+- ui: 界面相关
+- data: 数据处理
+- auth: 认证相关
+- api: 接口相关
+- core: 核心功能
+
+### Subject 描述
+- 使用现在时态
+- 不要以句号结尾
+- 简明扼要（不超过50个字符）
+
+## 分支管理
+- main: 主分支，用于生产环境
+- develop: 开发分支
+- feature/*: 功能分支
+- bugfix/*: 修复分支
+- release/*: 发布分支
+
+## 最佳实践
+- 经常性地进行小型提交
+- 保持提交历史的清晰
+- 在合并前进行代码审查
+- 使用 rebase 保持提交历史整洁

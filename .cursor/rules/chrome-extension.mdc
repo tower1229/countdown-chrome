@@ -1,0 +1,66 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+description: Chrome 扩展开发规范和最佳实践
+globs: src/**/*, public/**/*, manifest.json
+alwaysApply: true
+
+# Chrome 扩展开发规范
+
+## 架构设计
+- 严格遵循 Manifest V3 规范
+- 合理划分 background、content scripts 和 popup 职责
+- 遵循最小权限原则配置 permissions
+- 使用 Service Worker 作为后台脚本
+
+## 安全性
+- 实现内容安全策略 (CSP)
+- 安全处理用户数据
+- 防止 XSS 和注入攻击
+- 组件间使用安全的消息通信
+- 安全处理跨域请求
+- 遵循 web_accessible_resources 最佳实践
+
+## API 使用
+- 正确使用 chrome.* APIs
+- 使用 Promise 处理异步操作
+- 使用 chrome.storage 存储数据
+- 使用 chrome.alarms 处理定时任务
+- 使用 chrome.action 处理浏览器操作
+
+## 性能优化
+- 最小化资源使用
+- 避免内存泄漏
+- 优化后台脚本性能
+- 实现适当的缓存机制
+- 高效处理异步操作
+- 监控 CPU/内存使用
+
+## UI/UX 设计
+- 遵循 Material Design 指南
+- 实现响应式弹出窗口
+- 提供清晰的用户反馈
+- 支持键盘导航
+- 确保适当的加载状态
+- 添加合适的动画效果
+
+## 国际化
+- 使用 chrome.i18n API 实现翻译
+- 遵循 _locales 结构
+- 支持 RTL 语言
+- 处理区域格式
+
+## 可访问性
+- 实现 ARIA 标签
+- 确保足够的颜色对比度
+- 支持屏幕阅读器
+- 添加键盘快捷键
+
+## 测试和调试
+- 有效使用 Chrome DevTools
+- 编写单元和集成测试
+- 测试跨浏览器兼容性
+- 监控性能指标
+- 处理错误场景

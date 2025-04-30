@@ -1,92 +1,36 @@
 ---
 description:
-globs:
-alwaysApply: true
+globs: **/*.ts,**/*.tsx
+alwaysApply: false
 ---
-You are an expert Chrome extension developer, proficient in JavaScript/TypeScript, browser extension APIs, and web development.
+description: TypeScript 编码规则和最佳实践
+globs: **/*.ts, **/*.tsx
+alwaysApply: false
 
-Code Style and Structure
-- Write clear, modular TypeScript code with proper type definitions
-- Follow functional programming patterns; avoid classes
-- Use descriptive variable names (e.g., isLoading, hasPermission)
-- Structure files logically: popup, background, content scripts, utils
-- Implement proper error handling and logging
-- Document code with JSDoc comments
+# TypeScript 规范
 
-Architecture and Best Practices
-- Strictly follow Manifest V3 specifications
-- Divide responsibilities between background, content scripts and popup
-- Configure permissions following the principle of least privilege
-- Use modern build tools (webpack/vite) for development
-- Implement proper version control and change management
+## 类型系统
+- 优先使用 interface 定义对象类型
+- 使用 type 定义联合类型和交叉类型
+- 避免使用 any，优先使用 unknown
+- 启用严格的 TypeScript 配置
+- 为函数参数和返回值添加类型注解
 
-Chrome API Usage
-- Use chrome.* APIs correctly (storage, tabs, runtime, etc.)
-- Handle asynchronous operations with Promises
-- Use Service Worker for background scripts (MV3 requirement)
-- Implement chrome.alarms for scheduled tasks
-- Use chrome.action API for browser actions
-- Handle offline functionality gracefully
+## 类型定义
+- 接口名使用 `I` 前缀（如 IProps）
+- 类型别名使用 `T` 前缀（如 TState）
+- 枚举类型使用 `E` 前缀（如 EStatus）
+- 常量使用 `const` 断言确保类型安全
 
-Security and Privacy
-- Implement Content Security Policy (CSP)
-- Handle user data securely
-- Prevent XSS and injection attacks
-- Use secure messaging between components
-- Handle cross-origin requests safely
-- Implement secure data encryption
-- Follow web_accessible_resources best practices
+## 最佳实践
+- 使用可选链操作符 (?.)
+- 使用空值合并操作符 (??)
+- 优先使用类型推断
+- 合理使用泛型增加代码复用性
+- 使用 readonly 标记只读属性
 
-Performance and Optimization
-- Minimize resource usage and avoid memory leaks
-- Optimize background script performance
-- Implement proper caching mechanisms
-- Handle asynchronous operations efficiently
-- Monitor and optimize CPU/memory usage
-
-UI and User Experience
-- Follow Material Design guidelines
-- Implement responsive popup windows
-- Provide clear user feedback
-- Support keyboard navigation
-- Ensure proper loading states
-- Add appropriate animations
-
-Internationalization
-- Use chrome.i18n API for translations
-- Follow _locales structure
-- Support RTL languages
-- Handle regional formats
-
-Accessibility
-- Implement ARIA labels
-- Ensure sufficient color contrast
-- Support screen readers
-- Add keyboard shortcuts
-
-Testing and Debugging
-- Use Chrome DevTools effectively
-- Write unit and integration tests
-- Test cross-browser compatibility
-- Monitor performance metrics
-- Handle error scenarios
-
-Publishing and Maintenance
-- Prepare store listings and screenshots
-- Write clear privacy policies
-- Implement update mechanisms
-- Handle user feedback
-- Maintain documentation
-
-Follow Official Documentation
-- Refer to Chrome Extension documentation
-- Stay updated with Manifest V3 changes
-- Follow Chrome Web Store guidelines
-- Monitor Chrome platform updates
-
-Output Expectations
-- Provide clear, working code examples
-- Include necessary error handling
-- Follow security best practices
-- Ensure cross-browser compatibility
-- Write maintainable and scalable code
+## 模块导入导出
+- 使用 ES 模块语法
+- 导出时明确指定类型
+- 避免使用默认导出
+- 按类别组织导入语句
