@@ -26,14 +26,13 @@ initializeCloudSync()
 
 // 监听扩展卸载事件
 chrome.runtime.onSuspend.addListener(() => {
-  console.log("Extension is being unloaded, forcing cloud sync");
+  console.log("扩展卸载中，执行最终同步");
   // 执行强制同步，确保最新数据在卸载前同步到云端
   // 注意：由于onSuspend事件执行时间有限，我们需要尽快完成同步
   try {
     // 同步方式调用，确保在扩展卸载前完成同步
     chrome.storage.local.get(["customTimers"], (result) => {
       if (result && result.customTimers && result.customTimers.length > 0) {
-        console.log(`卸载前同步${result.customTimers.length}个定时器到云端`);
         chrome.storage.sync.set({ syncedTimers: result.customTimers });
         console.log("卸载前同步完成");
       }
@@ -44,8 +43,8 @@ chrome.runtime.onSuspend.addListener(() => {
 
   // 异步方式也尝试执行，作为备份
   forceSyncToCloud()
-    .then(() => console.log("Final cloud sync completed before unload"))
-    .catch((error) => console.error("Final cloud sync error:", error));
+    .then(() => console.log("异步备份同步完成"))
+    .catch((error) => console.error("异步备份同步错误:", error));
 });
 
 // Handle content script status
