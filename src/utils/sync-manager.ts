@@ -52,6 +52,7 @@ export const saveToCloud = async (timers: CustomTimer[]): Promise<void> => {
  * 当定时器列表变化时调用，10分钟后才真正同步到云端
  */
 export const triggerCloudSync = async (): Promise<void> => {
+  console.log("触发云端同步（带防抖）");
   // 清除现有的防抖计时器
   if (syncDebounceTimer !== null) {
     clearTimeout(syncDebounceTimer);
@@ -60,10 +61,10 @@ export const triggerCloudSync = async (): Promise<void> => {
   // 设置新的防抖计时器
   return new Promise((resolve) => {
     syncDebounceTimer = setTimeout(async () => {
-      console.log("防抖结束，执行云端同步");
       try {
         const timers = await getCustomTimers();
         await saveToCloud(timers);
+        console.log("云端同步成功");
       } catch (error) {
         console.error("云端同步错误:", error);
       } finally {
