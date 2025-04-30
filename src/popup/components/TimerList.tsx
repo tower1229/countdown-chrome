@@ -84,7 +84,7 @@ const TimerList: React.FC<TimerListProps> = ({
   if (timers.length === 0) {
     return (
       <div className="text-center py-6 text-gray-500">
-        没有定时器，点击"新建"按钮创建一个定时器
+        No timers, click "+" button to create a timer
       </div>
     );
   }
