@@ -90,8 +90,7 @@
 │   ├── icons/
 │   │   ├── icon16.png
 │   │   ├── icon48.png
-│   │   ├── icon128.png
-│   │   └── timer-template.svg
+│   │   └── icon128.png
 │   ├── sounds/
 │   │   ├── default.mp3
 │   │   ├── bell.mp3
