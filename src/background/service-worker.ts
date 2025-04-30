@@ -10,6 +10,7 @@ import {
   DEFAULT_NOTIFICATION_SOUND,
   playWithOffscreenDocument,
 } from "../utils/audio";
+import { initializeCloudSync, forceSyncToCloud } from "../utils/sync-manager";
 
 // Interval for updating the icon and sending messages
 const UPDATE_INTERVAL = 1000; // 1 second
@@ -17,6 +18,20 @@ const UPDATE_INTERVAL = 1000; // 1 second
 let isCountingDown = false;
 // Track known active content scripts
 const activeContentScriptTabs = new Set<number>();
+
+// 在扩展初始化时执行云端同步
+initializeCloudSync()
+  .then(() => console.log("Cloud sync initialization completed"))
+  .catch((error) => console.error("Cloud sync initialization error:", error));
+
+// 监听扩展卸载事件
+chrome.runtime.onSuspend.addListener(() => {
+  console.log("Extension is being unloaded, forcing cloud sync");
+  // 执行强制同步，确保最新数据在卸载前同步到云端
+  forceSyncToCloud()
+    .then(() => console.log("Final cloud sync completed before unload"))
+    .catch((error) => console.error("Final cloud sync error:", error));
+});
 
 // Handle content script status
 chrome.runtime.onMessage.addListener((message, sender) => {

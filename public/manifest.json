@@ -29,14 +29,25 @@
   ],
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["src/content/playSound.ts"]
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "src/content/playSound.ts"
+      ]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["sounds/*", "icons/*"],
-      "matches": ["http://*/*", "https://*/*"]
+      "resources": [
+        "sounds/*",
+        "icons/*"
+      ],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ]
     }
   ]
 }
