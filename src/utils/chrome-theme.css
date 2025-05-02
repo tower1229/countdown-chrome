@@ -390,7 +390,7 @@ body {
 .chrome-sound-item {
   display: flex;
   align-items: center;
-  padding: 8px 0;
+  padding: 4px 0;
 }
 
 .chrome-sound-item input[type="radio"] {

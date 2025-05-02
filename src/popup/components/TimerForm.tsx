@@ -77,7 +77,7 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-2 w-full">
-      <div className=" flex flex-col  space-y-4 chrome-border-bottom py-8">
+      <div className=" flex flex-col  space-y-4 chrome-border-bottom py-4">
         <div className="flex items-center">
           <div className="chrome-item-text flex-1">
             <label className="chrome-item-title" htmlFor="hours-input">
@@ -182,7 +182,7 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
       </div>
 
       {/* Color picker section */}
-      <div className="chrome-item chrome-border-bottom py-8">
+      <div className="chrome-item chrome-border-bottom py-4">
         <div className="chrome-item-text">
           <div className="chrome-item-title">Color</div>
         </div>
@@ -203,7 +203,7 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
       </div>
 
       {/* Sound selection */}
-      <div className="chrome-item py-8">
+      <div className="chrome-item py-4">
         <div className="chrome-item-text mb-2">
           <div className="chrome-item-title">Sound</div>
         </div>
