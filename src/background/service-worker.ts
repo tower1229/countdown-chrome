@@ -10,6 +10,7 @@ import {
   DEFAULT_NOTIFICATION_SOUND,
   playWithOffscreenDocument,
 } from "../utils/audio";
+import { initializeCloudSync, forceSyncToCloud } from "../utils/sync-manager";
 
 // Interval for updating the icon and sending messages
 const UPDATE_INTERVAL = 1000; // 1 second
@@ -17,6 +18,34 @@ const UPDATE_INTERVAL = 1000; // 1 second
 let isCountingDown = false;
 // Track known active content scripts
 const activeContentScriptTabs = new Set<number>();
+
+// 在扩展初始化时执行云端同步
+initializeCloudSync()
+  .then(() => console.log("Cloud sync initialization completed"))
+  .catch((error) => console.error("Cloud sync initialization error:", error));
+
+// 监听扩展卸载事件
+chrome.runtime.onSuspend.addListener(() => {
+  console.log("扩展卸载中，执行最终同步");
+  // 执行强制同步，确保最新数据在卸载前同步到云端
+  // 注意：由于onSuspend事件执行时间有限，我们需要尽快完成同步
+  try {
+    // 同步方式调用，确保在扩展卸载前完成同步
+    chrome.storage.local.get(["customTimers"], (result) => {
+      if (result && result.customTimers && result.customTimers.length > 0) {
+        chrome.storage.sync.set({ syncedTimers: result.customTimers });
+        console.log("卸载前同步完成");
+      }
+    });
+  } catch (error) {
+    console.error("卸载前同步错误:", error);
+  }
+
+  // 异步方式也尝试执行，作为备份
+  forceSyncToCloud()
+    .then(() => console.log("异步备份同步完成"))
+    .catch((error) => console.error("异步备份同步错误:", error));
+});
 
 // Handle content script status
 chrome.runtime.onMessage.addListener((message, sender) => {

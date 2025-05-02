@@ -1,4 +1,5 @@
 import { TimerState, TimerSettings, CustomTimer, AppState } from "../types";
+import { triggerCloudSync } from "./sync-manager";
 
 /**
  * Get timer state
@@ -72,6 +73,9 @@ export const getCustomTimers = (): Promise<CustomTimer[]> => {
 export const saveCustomTimers = (timers: CustomTimer[]): Promise<void> => {
   return new Promise((resolve) => {
     chrome.storage.local.set({ customTimers: timers }, () => {
+      triggerCloudSync().catch((err) =>
+        console.error("Cloud sync error:", err)
+      );
       resolve();
     });
   });

@@ -7,7 +7,7 @@ build/
 .next/
 out/
 
-# Chrome Extension build artifacts
+# Browser Extension build artifacts
 extension-dist/
 extension-build/
 
@@ -51,8 +51,6 @@ coverage/
 Desktop.ini
 $RECYCLE.BIN/
 
-# Chrome Extension local storage
-chrome-profile/
 
 # Optional: ignore lock files if not using lockfile
 # package-lock.json

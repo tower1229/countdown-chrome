@@ -2,52 +2,50 @@
 
 ## Short Description (up to 132 characters)
 
-A simple and easy-to-use countdown timer that shows remaining time in the browser toolbar and notifies you when time is up.
+Powerful browser countdown timer: set custom timers with sounds/colors, cloud sync, quick start list, dynamic toolbar icon, and notifications.
 
 ## Detailed Description (up to 16,000 characters)
 
-**New Countdown Timer - A Chrome Extension for Focused Time Management**
+**New Countdown Timer - A Browser Extension for Enhanced Time Management**
 
-New Countdown Timer is a simple yet powerful Chrome countdown tool that helps you manage your time more effectively. Whether you need to control study sessions, set cooking reminders, or manage meeting durations, this lightweight extension has you covered.
+New Countdown Timer is a versatile browser countdown tool designed to help you manage your time with precision and flexibility. Beyond simple countdowns, this extension lets you create, save, and manage multiple custom timers for various tasks, from focused work sessions to cooking or exercise intervals.
 
 ### Key Features
 
-- **Easy Setup**: Quickly set hours, minutes, and seconds
-- **Real-Time Display**: Countdown dynamically updates in the browser toolbar, so you can check the remaining time without switching tabs
-- **Flexible Control**: Start or cancel the countdown at any time
-- **Instant Notifications**: Get desktop notifications and sound alerts when the countdown ends
-- **Memory Recall**: Automatically saves your last used timer settings for greater efficiency
+- **Custom Timers**: Create, edit, and save multiple personalized timers with specific durations, sounds, and color identifiers.
+- **Organized List**: Access all your saved timers in a clean list, with drag-and-drop support for easy reordering.
+- **Quick Start**: Launch any saved timer with a single click directly from the list view.
+- **Cloud Sync**: Seamlessly synchronize your custom timers across multiple devices using browser sync.
+- **Real-Time Toolbar Display**: See the remaining time dynamically updated directly on the browser toolbar icon while a timer is active.
+- **Instant Notifications**: Receive desktop notifications and customizable sound alerts when a countdown finishes.
+- **Flexible Control**: Start, pause, or cancel any countdown at any time.
+- **Intuitive Interface**: Easily set hours, minutes, and seconds using keyboard input or intuitive controls, featuring a modern interface based on Material Design principles.
+- **Focused View**: When a countdown is running, the extension popup provides a dedicated view of the active timer.
+- **Memory Recall**: Automatically saves your last used manual timer settings for quick access.
 
 ### Use Cases
 
-- **🎯 Stay Focused at Work**: Set a 25-minute Pomodoro session
-- **⏱️ Manage Meeting Time**: Prevent meetings from running over
-- **🍳 Kitchen Timer**: The perfect assistant for cooking or baking
-- **💻 Limit Screen Time**: Help manage your child's internet usage
-- **🏋️ Workout Timer**: Time intervals for fitness routines
+- **🍵 Perfect Tea Brewing**: Set precise steeping times for different types of tea.
+- **🎯 Boost Productivity**: Set custom timers for Pomodoro sessions or task blocks.
+- **⏱️ Manage Meetings**: Ensure meetings stay on track and end on time.
+- **🍳 Kitchen Aid**: Perfect for timing cooking, baking, or brewing.
+- **💻 Digital Wellbeing**: Set limits for screen time or specific online activities.
+- **🏋️ Fitness Partner**: Time workout intervals or rest periods.
 
 ### Privacy First
 
-We take your privacy seriously. New Countdown Timer runs entirely locally and does not collect or transmit any personal data. All settings are stored only in your browser.
-
-### Simple to Use
-
-Just click the extension icon, set your desired time, and click "Start Countdown." While the timer is running, you can see the remaining time dynamically displayed in the browser toolbar icon.
+Your privacy is paramount. New Countdown Timer operates entirely locally and does not collect or transmit any personal data. Your custom timer settings are securely stored and synchronized using browser's built-in storage and sync APIs.
 
 ### Lightweight & Efficient
 
-New Countdown Timer is optimized for minimal resource usage and will not slow down your browser.
-
-### Keyboard Friendly
-
-Supports keyboard operations: use plus/minus buttons or type numbers directly to adjust the timer, and press Enter to quickly start or cancel the countdown.
+Optimized for minimal resource usage, New Countdown Timer runs smoothly without slowing down your browser.
 
 ### Open Source & Transparent
 
-This is an open-source project. You can view the source code on GitHub.
+This project is open source. You can review the code on GitHub.
 
 ---
 
 If you have any questions, suggestions, or feedback, please contact us via the Chrome Web Store reviews or our contact email.
 
-Thank you for using New Countdown Timer. We hope it helps you manage your time more effectively!
+Thank you for using New Countdown Timer. We hope it empowers you to manage your time more effectively!

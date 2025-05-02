@@ -32,8 +32,9 @@ New Countdown Timer 扩展仅收集以下信息：
 New Countdown Timer 扩展需要以下权限：
 
 - **storage**: 用于在本地存储倒计时设置和状态
-- **alarms**: 用于管理定时通知
 - **notifications**: 用于在倒计时完成时发送通知
+- **activeTab**: 用于在当前标签页中播放声音
+- **offscreen**: 用于播放背景通知声音
 
 ## 数据共享和披露
 
