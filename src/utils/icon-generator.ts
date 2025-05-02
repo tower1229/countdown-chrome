@@ -78,6 +78,7 @@ export const setExtensionIcon = async (text: string): Promise<void> => {
     console.error("Failed to set icon:", error);
     // Error handling: use simple badge text to display time
     try {
+      // Use text parameter as is to maintain consistency with the countdown display
       chrome.action.setBadgeText({ text });
       chrome.action.setBadgeBackgroundColor({ color: "#2563EB" });
     } catch (badgeError) {

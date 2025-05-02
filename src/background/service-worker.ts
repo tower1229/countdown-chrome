@@ -81,6 +81,7 @@ const updateTimer = async () => {
     isCountingDown = true;
 
     const now = Date.now();
+    // Calculate remaining time
     const remainingTime = state.endTime - now;
 
     // Send update message to popup
@@ -95,7 +96,7 @@ const updateTimer = async () => {
       );
     }
 
-    // Update icon display
+    // Update icon display - ensure same rounding as CountdownView
     const timeText = createIconText(remainingTime);
     await setExtensionIcon(timeText);
 

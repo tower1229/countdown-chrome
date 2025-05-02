@@ -31,6 +31,8 @@ const TimerItem: React.FC<TimerItemProps> = ({
         backgroundColor: "var(--chrome-bg-color)",
         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
       }}
+      // 提示拖动可以排序
+      title="Drag to reorder"
     >
       <div className="cursor-grab flex flex-1 items-center overflow-hidden">
         <div className="mr-3 flex-shrink-0">
@@ -69,6 +71,7 @@ const TimerItem: React.FC<TimerItemProps> = ({
           className="text-base flex items-center justify-center transition-colors cursor-pointer"
           aria-label="Start timer"
           style={{ color: "var(--chrome-green)" }}
+          title="Start timer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

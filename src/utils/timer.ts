@@ -103,6 +103,8 @@ export const formatTimerDisplay = (
  * - Less than 1 minute: show seconds only, e.g. "59"
  */
 export const createIconText = (milliseconds: number): string => {
+  // Round to full seconds to match CountdownView behavior
+  // This ensures icon and UI display the same value
   const totalSeconds = millisecondsToSeconds(milliseconds);
   const { hours, minutes, seconds } = calculateTimeUnits(totalSeconds);
 
