@@ -85,7 +85,7 @@ const CountdownView: React.FC<CountdownViewProps> = ({
         </div>
 
         <button
-          className="chrome-button chrome-button-danger"
+          className="chrome-button chrome-button-outline"
           onClick={onCancel}
           tabIndex={0}
           aria-label="Cancel countdown"

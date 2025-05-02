@@ -10,7 +10,6 @@ interface TimerListPageProps {
   onEditTimer: (timer: CustomTimer) => void;
   onDeleteTimer: (id: string) => void;
   onReorderTimers: (newOrder: CustomTimer[]) => void;
-  isCountingDown: boolean;
   onCancel: () => void;
   remainingTime: number;
 }
@@ -22,24 +21,9 @@ const TimerListPage: React.FC<TimerListPageProps> = ({
   onEditTimer,
   onDeleteTimer,
   onReorderTimers,
-  isCountingDown,
-  onCancel,
-  remainingTime,
 }) => {
   // Sort timers by the order field
   const sortedTimers = [...timers].sort((a, b) => a.order - b.order);
-
-  // Format remaining time
-  const formatRemainingTime = (milliseconds: number): string => {
-    const seconds = Math.floor(milliseconds / 1000);
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-
-    return `${hours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
-  };
 
   const addButton = (
     <button
@@ -64,24 +48,6 @@ const TimerListPage: React.FC<TimerListPageProps> = ({
 
   return (
     <ChromeLayout title="Countdown Timer" rightAction={addButton}>
-      {isCountingDown && (
-        <div className="chrome-active-countdown mb-4">
-          <div className="chrome-active-countdown-info">
-            <div className="chrome-active-countdown-label">Counting down:</div>
-            <div className="chrome-active-countdown-time">
-              {formatRemainingTime(remainingTime)}
-            </div>
-          </div>
-          <button
-            onClick={onCancel}
-            className="chrome-button chrome-button-danger"
-            aria-label="Cancel timer"
-          >
-            Cancel
-          </button>
-        </div>
-      )}
-
       <div className="mt-4">
         <TimerList
           timers={sortedTimers}

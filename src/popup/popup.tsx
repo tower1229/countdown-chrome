@@ -358,7 +358,6 @@ const Popup: React.FC = () => {
                   onStartTimer={handleStart}
                   onCreateTimer={handleCreateTimer}
                   onReorderTimers={handleReorderTimers}
-                  isCountingDown={isCountingDown}
                   onCancel={handleCancel}
                   remainingTime={remainingTime}
                 />
