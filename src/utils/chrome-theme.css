@@ -125,7 +125,6 @@ body {
 .chrome-item-title {
   font-size: 14px;
   color: var(--chrome-text-color);
-  margin-bottom: 4px;
 }
 
 .chrome-item-description {
@@ -368,7 +367,6 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 8px;
 }
 
 .chrome-color-option {

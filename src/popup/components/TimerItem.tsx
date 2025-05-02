@@ -35,7 +35,7 @@ const TimerItem: React.FC<TimerItemProps> = ({
       <div className="cursor-grab flex flex-1 items-center overflow-hidden">
         <div className="mr-3 flex-shrink-0">
           <div
-            className="w-7 h-7 rounded-full flex items-center justify-center"
+            className="w-7 h-7 rounded-full flex items-center justify-center opacity-70"
             style={{ backgroundColor: color }}
           >
             <svg
