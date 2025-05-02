@@ -76,20 +76,18 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-2 w-full">
+      <div className=" flex flex-col  space-y-4 chrome-border-bottom py-8">
         <div className="flex items-center">
-          <label
-            className="font-medium flex-1 text-base text-gray-700 w-20"
-            htmlFor="hours-input"
-          >
-            Hours:
-          </label>
-          <div className="join">
+          <div className="chrome-item-text flex-1">
+            <label className="chrome-item-title" htmlFor="hours-input">
+              Hours
+            </label>
+          </div>
+          <div className="chrome-number-input w-[180px]">
             <button
               type="button"
               onClick={() => handleDecrement(setHours, hours)}
-              className="btn btn-square join-item"
               aria-label="Decrease hours"
             >
               −
@@ -102,12 +100,11 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
               max={99}
               label=""
               ariaLabel="Hours input, 0 to 99"
-              className="join-item"
+              className=""
             />
             <button
               type="button"
               onClick={() => handleIncrement(setHours, hours, 99)}
-              className="btn btn-square join-item"
               aria-label="Increase hours"
             >
               +
@@ -116,17 +113,15 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
         </div>
 
         <div className="flex items-center">
-          <label
-            className="font-medium flex-1 text-base text-gray-700 w-20"
-            htmlFor="minutes-input"
-          >
-            Minutes:
-          </label>
-          <div className="join">
+          <div className="chrome-item-text flex-1">
+            <label className="chrome-item-title" htmlFor="minutes-input">
+              Minutes
+            </label>
+          </div>
+          <div className="chrome-number-input w-[180px]">
             <button
               type="button"
               onClick={() => handleDecrement(setMinutes, minutes)}
-              className="btn btn-square join-item"
               aria-label="Decrease minutes"
             >
               −
@@ -139,12 +134,11 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
               max={59}
               label=""
               ariaLabel="Minutes input, 0 to 59"
-              className="join-item"
+              className=""
             />
             <button
               type="button"
               onClick={() => handleIncrement(setMinutes, minutes, 59)}
-              className="btn btn-square join-item"
               aria-label="Increase minutes"
             >
               +
@@ -153,17 +147,15 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
         </div>
 
         <div className="flex items-center">
-          <label
-            className="font-medium flex-1 text-base text-gray-700 w-20"
-            htmlFor="seconds-input"
-          >
-            Seconds:
-          </label>
-          <div className="join">
+          <div className="chrome-item-text flex-1">
+            <label className="chrome-item-title" htmlFor="seconds-input">
+              Seconds
+            </label>
+          </div>
+          <div className="chrome-number-input w-[180px]">
             <button
               type="button"
               onClick={() => handleDecrement(setSeconds, seconds)}
-              className="btn btn-square join-item"
               aria-label="Decrease seconds"
             >
               −
@@ -176,12 +168,11 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
               max={59}
               label=""
               ariaLabel="Seconds input, 0 to 59"
-              className="join-item"
+              className=""
             />
             <button
               type="button"
               onClick={() => handleIncrement(setSeconds, seconds, 59)}
-              className="btn btn-square join-item"
               aria-label="Increase seconds"
             >
               +
@@ -190,85 +181,71 @@ const TimerForm: React.FC<TimerFormProps> = ({ timer, onSave, onCancel }) => {
         </div>
       </div>
 
-      <div className="mb-4">
-        <label className="font-medium text-sm mb-2 text-gray-700 block">
-          Color
-        </label>
-        <div className="flex flex-nowrap mt-2 gap-2">
+      {/* Color picker section */}
+      <div className="chrome-item chrome-border-bottom py-8">
+        <div className="chrome-item-text">
+          <div className="chrome-item-title">Color</div>
+        </div>
+        <div className="chrome-color-grid">
           {DEFAULT_COLORS.map((colorOption) => (
             <button
               key={colorOption}
               type="button"
-              onClick={() => setColor(colorOption)}
-              className={`btn btn-circle btn-sm ${
-                color === colorOption ? "ring ring-offset-2" : "btn-ghost"
+              className={`chrome-color-option ${
+                color === colorOption ? "selected" : ""
               }`}
               style={{ backgroundColor: colorOption }}
-              aria-label={`Color: ${colorOption}`}
+              onClick={() => setColor(colorOption)}
+              aria-label={`Select ${colorOption} color`}
             />
           ))}
         </div>
       </div>
 
-      <div className="mb-6">
-        <label className="font-medium text-sm mb-2 text-gray-700 block">
-          Sound
-        </label>
-        <div className="mt-2 flex flex-wrap gap-2">
+      {/* Sound selection */}
+      <div className="chrome-item py-8">
+        <div className="chrome-item-text mb-2">
+          <div className="chrome-item-title">Sound</div>
+        </div>
+        <div>
           {DEFAULT_SOUNDS.map((soundOption) => (
-            <div key={soundOption} className="join">
-              <button
-                type="button"
-                onClick={() => setSound(soundOption)}
-                className={`btn btn-sm join-item ${
-                  sound === soundOption ? "btn-primary" : "btn-outline"
-                }`}
-                aria-label={`Sound: ${soundOption}`}
+            <div key={soundOption} className="chrome-sound-item">
+              <input
+                type="radio"
+                id={`sound-${soundOption}`}
+                name="sound"
+                value={soundOption}
+                checked={sound === soundOption}
+                onChange={() => setSound(soundOption)}
+                className="mr-2"
+              />
+              <label
+                htmlFor={`sound-${soundOption}`}
+                className="chrome-sound-item-label"
               >
-                {soundOption.split(".")[0]}
-              </button>
+                {soundOption.charAt(0).toUpperCase() + soundOption.slice(1)}
+              </label>
               <button
                 type="button"
                 onClick={() => handlePreviewSound(soundOption)}
-                className={`btn btn-sm join-item ${
-                  sound === soundOption ? "btn-primary" : "btn-outline"
-                }`}
-                aria-label={`Preview: ${soundOption}`}
-                title="Preview sound"
+                className="chrome-sound-item-preview"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217z"
-                    clipRule="evenodd"
-                  />
-                  <path d="M14.243 5.757a1 1 0 10-1.414 1.414 4 4 0 010 5.657 1 1 0 001.414 1.414 6 6 0 000-8.485z" />
-                </svg>
+                Preview
               </button>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="flex space-x-4 justify-between">
+      <div className="chrome-footer">
         <button
           type="button"
           onClick={onCancel}
-          className="btn btn-block btn-outline flex-1"
-          aria-label="Cancel"
+          className="chrome-button chrome-button-outline"
         >
           Cancel
         </button>
-        <button
-          type="submit"
-          className="btn btn-block btn-primary flex-1"
-          aria-label="Save"
-        >
+        <button type="submit" className="chrome-button chrome-button-primary">
           Save
         </button>
       </div>

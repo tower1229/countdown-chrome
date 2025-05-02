@@ -83,14 +83,14 @@ const TimerList: React.FC<TimerListProps> = ({
 
   if (timers.length === 0) {
     return (
-      <div className="text-center py-6 text-gray-500">
-        No timers, click "+" button to create a timer
+      <div className="text-center py-6 text-chrome-secondary-text w-full">
+        No timers, click "+" button to create one
       </div>
     );
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 w-full">
       {timers.map((timer, index) => (
         <div
           key={timer.id}
@@ -99,6 +99,7 @@ const TimerList: React.FC<TimerListProps> = ({
           onDragEnd={handleDragEnd}
           onDragOver={handleDragOver}
           onDragEnter={() => handleDragEnter(index)}
+          className="w-full"
         >
           <TimerItem
             timer={timer}

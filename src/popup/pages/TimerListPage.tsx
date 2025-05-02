@@ -1,6 +1,7 @@
 import React from "react";
 import { CustomTimer } from "../../types";
 import TimerList from "../components/TimerList";
+import ChromeLayout from "../components/ChromeLayout";
 
 interface TimerListPageProps {
   timers: CustomTimer[];
@@ -40,49 +41,44 @@ const TimerListPage: React.FC<TimerListPageProps> = ({
       .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
-  return (
-    <div className="timer-list-container">
-      <div className="flex mb-6 justify-between items-center">
-        <h1 className="page-title">New Countdown Timer</h1>
-        <button
-          onClick={onCreateTimer}
-          className="btn btn-sm btn-square btn-primary"
-          aria-label="Create new timer"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-      </div>
+  const addButton = (
+    <button
+      onClick={onCreateTimer}
+      className="chrome-button-primary rounded-full w-8 h-8 flex items-center justify-center"
+      aria-label="Create new timer"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+          clipRule="evenodd"
+        />
+      </svg>
+    </button>
+  );
 
+  return (
+    <ChromeLayout title="Countdown Timer" rightAction={addButton}>
       {isCountingDown && (
-        <div className="rounded-lg bg-blue-50 shadow-sm mb-4 p-4">
-          <div className="flex justify-between items-center">
-            <div>
-              <div className="font-medium text-sm text-blue-600">
-                Counting down:
-              </div>
-              <div className="font-bold text-lg">
-                {formatRemainingTime(remainingTime)}
-              </div>
+        <div className="chrome-active-countdown mb-4">
+          <div className="chrome-active-countdown-info">
+            <div className="chrome-active-countdown-label">Counting down:</div>
+            <div className="chrome-active-countdown-time">
+              {formatRemainingTime(remainingTime)}
             </div>
-            <button
-              onClick={onCancel}
-              className="bg-red-500 btn btn-primary hover:bg-red-600"
-              aria-label="Cancel timer"
-            >
-              Cancel
-            </button>
           </div>
+          <button
+            onClick={onCancel}
+            className="chrome-button chrome-button-danger"
+            aria-label="Cancel timer"
+          >
+            Cancel
+          </button>
         </div>
       )}
 
@@ -95,7 +91,7 @@ const TimerListPage: React.FC<TimerListPageProps> = ({
           onReorderTimers={onReorderTimers}
         />
       </div>
-    </div>
+    </ChromeLayout>
   );
 };
 

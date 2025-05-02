@@ -50,9 +50,9 @@ const TimeInput: React.FC<TimeInputProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full">
       {label && (
-        <label className="text-sm mb-1" htmlFor={id}>
+        <label className="text-sm mb-1 text-chrome-text-color" htmlFor={id}>
           {label}
         </label>
       )}
@@ -61,7 +61,13 @@ const TimeInput: React.FC<TimeInputProps> = ({
         type="text"
         inputMode="numeric"
         pattern="[0-9]*"
-        className={`w-14 h-10 text-center text-xl font-medium border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 ${className}`}
+        className={`text-center text-base font-medium border rounded-md focus:outline-none focus:ring-2 focus:ring-chrome-blue focus:border-chrome-blue ${className}`}
+        style={{
+          borderColor: "var(--chrome-border-color)",
+          color: "var(--chrome-text-color)",
+          width: "100%",
+          height: "32px",
+        }}
         value={inputValue}
         onChange={handleInputChange}
         onBlur={handleInputBlur}

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import ReactDOM from "react-dom/client";
 import "../utils/index.css";
 import "../utils/global.css";
+import "../utils/chrome-theme.css";
 import { TimerState, CustomTimer, AppState, Route } from "../types";
 import { calculateTotalSeconds } from "../utils/timer";
 import {
@@ -335,7 +336,8 @@ const Popup: React.FC = () => {
   return (
     <div
       ref={rootRef}
-      className="flex flex-col mx-auto min-h-screen px-0 pb-2 w-80"
+      className="flex flex-col mx-auto min-h-screen pb-2 rounded-lg overflow-hidden"
+      style={{ width: "360px" }}
     >
       {!isLoading && (
         <div className="flex-grow">
@@ -380,7 +382,11 @@ const Popup: React.FC = () => {
 // Render application
 const root = document.getElementById("root");
 if (root) {
-  ReactDOM.createRoot(root).render(<Popup />);
+  ReactDOM.createRoot(root).render(
+    <div style={{ width: "360px" }} className="rounded-lg overflow-hidden">
+      <Popup />
+    </div>
+  );
 }
 
 export default Popup;

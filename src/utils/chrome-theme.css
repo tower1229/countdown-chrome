@@ -1,0 +1,517 @@
+/* Chrome UI Theme for Countdown Extension */
+
+/* Base styles matching Chrome settings UI */
+:root {
+  --chrome-bg-color: #ffffff;
+  --chrome-text-color: #202124;
+  --chrome-secondary-text-color: #5f6368;
+  --chrome-border-color: #dadce0;
+  --chrome-blue: #1a73e8;
+  --chrome-green: #1e8e3e;
+  --chrome-red: #d93025;
+  --chrome-focus-ring: rgba(26, 115, 232, 0.4);
+  --chrome-control-bg: #f1f3f4;
+  --chrome-hover-bg: rgba(32, 33, 36, 0.04);
+  --chrome-active-bg: rgba(32, 33, 36, 0.08);
+  --chrome-toggle-bg: #dadce0;
+  --chrome-toggle-active-bg: #a8c7fa;
+  --chrome-toggle-active-dot: #1a73e8;
+  --chrome-toggle-dot: #ffffff;
+  --chrome-popup-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --chrome-radius: 8px;
+  --chrome-panel-border: 1px solid var(--chrome-border-color);
+  --chrome-separator: 1px solid var(--chrome-border-color);
+}
+
+/* Chrome popup styles */
+html,
+body {
+  border-radius: var(--chrome-radius);
+  overflow: hidden;
+}
+
+/* Typography */
+.chrome-text-lg {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--chrome-text-color);
+}
+
+.chrome-text-md {
+  font-size: 14px;
+  color: var(--chrome-text-color);
+}
+
+.chrome-text-sm {
+  font-size: 13px;
+  color: var(--chrome-secondary-text-color);
+}
+
+/* Container styles */
+.chrome-container {
+  width: 360px;
+  background-color: var(--chrome-bg-color);
+  color: var(--chrome-text-color);
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header with back button */
+.chrome-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: var(--chrome-panel-border);
+}
+
+.chrome-back-button {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  margin-right: 12px;
+  cursor: pointer;
+  color: var(--chrome-text-color);
+  border-radius: 50%;
+}
+
+.chrome-back-button:hover {
+  background-color: var(--chrome-hover-bg);
+}
+
+.chrome-back-button:active {
+  background-color: var(--chrome-active-bg);
+}
+
+.chrome-header-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--chrome-text-color);
+  flex: 1;
+}
+
+.chrome-header-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--chrome-secondary-text-color);
+}
+
+/* Content section */
+.chrome-content {
+  padding: 0 20px;
+}
+
+/* Item rows like in Chrome settings */
+.chrome-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.chrome-border-bottom {
+  border-bottom: var(--chrome-separator);
+}
+
+.chrome-item:last-child {
+  border-bottom: none;
+}
+
+.chrome-item-text {
+  flex: 1;
+}
+
+.chrome-item-title {
+  font-size: 14px;
+  color: var(--chrome-text-color);
+  margin-bottom: 4px;
+}
+
+.chrome-item-description {
+  font-size: 13px;
+  color: var(--chrome-secondary-text-color);
+}
+
+/* Chrome toggle switch */
+.chrome-toggle {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+}
+
+.chrome-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.chrome-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--chrome-toggle-bg);
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.chrome-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: var(--chrome-toggle-dot);
+  border-radius: 50%;
+  transition: 0.3s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.chrome-toggle input:checked + .chrome-toggle-slider {
+  background-color: var(--chrome-toggle-active-bg);
+}
+
+.chrome-toggle input:checked + .chrome-toggle-slider:before {
+  transform: translateX(16px);
+  background-color: var(--chrome-toggle-active-dot);
+}
+
+/* Button styles */
+.chrome-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border: none;
+}
+
+.chrome-button-outline {
+  border: 1px solid var(--chrome-border-color);
+  background-color: transparent;
+  color: var(--chrome-blue);
+  cursor: pointer;
+}
+
+.chrome-button-primary {
+  background-color: var(--chrome-blue);
+  color: white;
+  cursor: pointer;
+}
+
+.chrome-button-danger {
+  background-color: var(--chrome-red);
+  color: white;
+  cursor: pointer;
+}
+
+/* Chrome inputs */
+.chrome-input {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid var(--chrome-border-color);
+  border-radius: 4px;
+  background-color: var(--chrome-bg-color);
+  color: var(--chrome-text-color);
+  transition: border-color 0.2s;
+}
+
+.chrome-input:focus {
+  border-color: var(--chrome-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--chrome-focus-ring);
+}
+
+/* Chrome number input */
+.chrome-number-input {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--chrome-border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.chrome-number-input button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--chrome-control-bg);
+  border: none;
+  cursor: pointer;
+  color: var(--chrome-text-color);
+  flex-shrink: 0;
+}
+
+.chrome-number-input button:hover {
+  background-color: var(--chrome-hover-bg);
+}
+
+.chrome-number-input input {
+  flex: 1;
+  height: 32px;
+  text-align: center;
+  border: none;
+  border-left: 1px solid var(--chrome-border-color);
+  border-right: 1px solid var(--chrome-border-color);
+  font-size: 14px;
+  color: var(--chrome-text-color);
+  min-width: 0;
+}
+
+.chrome-number-input input:focus {
+  outline: none;
+}
+
+/* Timer item */
+.chrome-timer-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: var(--chrome-radius);
+  border: var(--chrome-panel-border);
+  margin-bottom: 8px;
+  transition: all 0.2s;
+}
+
+.chrome-timer-item:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.chrome-timer-item-handle {
+  color: var(--chrome-secondary-text-color);
+  margin-right: 12px;
+  cursor: grab;
+}
+
+.chrome-timer-item-time {
+  flex: 1;
+  font-weight: 500;
+}
+
+.chrome-timer-item-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.chrome-timer-item-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.chrome-timer-item-button:hover {
+  background-color: var(--chrome-hover-bg);
+}
+
+.chrome-timer-item-button-play {
+  color: var(--chrome-green);
+}
+
+.chrome-timer-item-button-edit {
+  color: var(--chrome-blue);
+}
+
+.chrome-timer-item-button-delete {
+  color: var(--chrome-red);
+}
+
+/* Active countdown banner */
+.chrome-active-countdown {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #e8f0fe;
+  border-radius: var(--chrome-radius);
+  margin-bottom: 16px;
+}
+
+.chrome-active-countdown-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.chrome-active-countdown-label {
+  font-size: 13px;
+  color: var(--chrome-blue);
+  margin-bottom: 4px;
+}
+
+.chrome-active-countdown-time {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--chrome-text-color);
+}
+
+/* Color picker styles */
+.chrome-color-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.chrome-color-option {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+  border: 2px solid transparent;
+}
+
+.chrome-color-option:hover {
+  transform: scale(1.1);
+}
+
+.chrome-color-option.selected {
+  border-color: var(--chrome-text-color);
+}
+
+/* Sound selector */
+.chrome-sound-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.chrome-sound-item input[type="radio"] {
+  margin-right: 8px;
+}
+
+.chrome-sound-item-label {
+  flex: 1;
+  font-size: 14px;
+}
+
+.chrome-sound-item-preview {
+  background-color: transparent;
+  border: none;
+  color: var(--chrome-blue);
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 13px;
+}
+
+.chrome-sound-item-preview:hover {
+  text-decoration: underline;
+}
+
+/* Add button */
+.chrome-add-button {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--chrome-blue);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.chrome-add-button:hover {
+  background-color: #0f62fe;
+}
+
+.chrome-add-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Footer with action buttons */
+.chrome-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 20px;
+  border-top: var(--chrome-panel-border);
+}
+
+/* Credit card form styles for the dialog in screenshots */
+.chrome-card-form {
+  padding: 16px;
+}
+
+.chrome-card-form-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.chrome-form-field {
+  margin-bottom: 16px;
+}
+
+.chrome-form-field label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: var(--chrome-text-color);
+}
+
+.chrome-form-field input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--chrome-border-color);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.chrome-form-field select {
+  padding: 8px 12px;
+  border: 1px solid var(--chrome-border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  width: 100%;
+}
+
+.chrome-form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.chrome-form-row > * {
+  flex: 1;
+}
+
+.chrome-card-info {
+  font-size: 13px;
+  color: var(--chrome-secondary-text-color);
+  margin-top: 16px;
+  text-align: center;
+}
+
+.chrome-form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}

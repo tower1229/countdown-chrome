@@ -6,6 +6,9 @@
   --color-primary: #358b5f;
 }
 
+/* Import Chrome UI Theme */
+@import "./chrome-theme.css";
+
 /* 容器样式 */
 .container {
   @apply w-full p-4;

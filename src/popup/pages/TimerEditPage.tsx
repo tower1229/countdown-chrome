@@ -1,6 +1,7 @@
 import React from "react";
 import { CustomTimer } from "../../types";
 import TimerForm from "../components/TimerForm";
+import ChromeLayout from "../components/ChromeLayout";
 
 interface TimerEditPageProps {
   timer: CustomTimer | null;
@@ -16,18 +17,17 @@ const TimerEditPage: React.FC<TimerEditPageProps> = ({
   isCreatingNew,
 }) => {
   return (
-    <div className="timer-form-container">
-      <h1 className="page-title">
-        {isCreatingNew ? "Create Timer" : "Edit Timer"}
-      </h1>
-
+    <ChromeLayout
+      title={isCreatingNew ? "Create Timer" : "Edit Timer"}
+      onBack={onCancel}
+    >
       <TimerForm
         timer={timer}
         onSave={onSave}
         onCancel={onCancel}
         isCreatingNew={isCreatingNew}
       />
-    </div>
+    </ChromeLayout>
   );
 };
 

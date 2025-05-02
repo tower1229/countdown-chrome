@@ -23,20 +23,21 @@ const TimerItem: React.FC<TimerItemProps> = ({
 
   return (
     <div
-      className={`flex items-center justify-between p-4 rounded-xl border shadow-sm transition-all ${
+      className={`flex items-center justify-between p-3 rounded-lg border transition-all w-full ${
         isDragging ? "opacity-50" : "opacity-100"
       }`}
       style={{
-        borderColor: color || "#3b82f6",
-        backgroundColor: `${color}15` || "#3b82f610",
+        borderColor: "var(--chrome-border-color)",
+        backgroundColor: color ? `${color}10` : "var(--chrome-bg-color)",
+        boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
       }}
     >
-      <div className="cursor-grab flex flex-1 items-center">
-        <div className="mr-3 text-gray-400">
+      <div className="cursor-grab flex flex-1 items-center overflow-hidden">
+        <div className="mr-3 text-gray-400 flex-shrink-0">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
+            width="18"
+            height="18"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -44,6 +45,7 @@ const TimerItem: React.FC<TimerItemProps> = ({
             strokeLinecap="round"
             strokeLinejoin="round"
             className="grip-icon"
+            style={{ color: "var(--chrome-secondary-text-color)" }}
           >
             <circle cx="8" cy="8" r="1" />
             <circle cx="8" cy="16" r="1" />
@@ -51,22 +53,26 @@ const TimerItem: React.FC<TimerItemProps> = ({
             <circle cx="16" cy="16" r="1" />
           </svg>
         </div>
-        <div className="flex-1">
-          <div className="font-medium text-base" style={{ color }}>
+        <div className="flex-1 min-w-0">
+          <div
+            className="font-medium text-sm truncate"
+            style={{ color: "var(--chrome-text-color)" }}
+          >
             {duration}
           </div>
         </div>
       </div>
-      <div className="flex space-x-3 items-center">
+      <div className="flex space-x-1 items-center flex-shrink-0">
         <button
           onClick={() => onStart(timer)}
-          className="rounded-full text-success p-2.5 transition-colors hover:bg-green-100"
+          className="rounded-full p-2 transition-colors hover:bg-gray-100"
           aria-label="Start timer"
+          style={{ color: "var(--chrome-green)" }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
+            width="18"
+            height="18"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -79,13 +85,14 @@ const TimerItem: React.FC<TimerItemProps> = ({
         </button>
         <button
           onClick={() => onEdit(timer)}
-          className="rounded-full text-info p-2.5 transition-colors hover:bg-blue-100"
+          className="rounded-full p-2 transition-colors hover:bg-gray-100"
           aria-label="Edit timer"
+          style={{ color: "var(--chrome-blue)" }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
+            width="18"
+            height="18"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -99,13 +106,14 @@ const TimerItem: React.FC<TimerItemProps> = ({
         </button>
         <button
           onClick={() => onDelete(timer.id)}
-          className="rounded-full text-error p-2.5 transition-colors hover:bg-red-100"
+          className="rounded-full p-2 transition-colors hover:bg-gray-100"
           aria-label="Delete timer"
+          style={{ color: "var(--chrome-red)" }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
+            width="18"
+            height="18"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"

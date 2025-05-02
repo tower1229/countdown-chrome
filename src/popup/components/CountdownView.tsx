@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import ChromeLayout from "./ChromeLayout";
 
 interface CountdownViewProps {
   remainingTime: number;
@@ -20,7 +21,7 @@ const formatTime = (ms: number) => {
 const CountdownView: React.FC<CountdownViewProps> = ({
   remainingTime,
   onCancel,
-  color = "#3B82F6",
+  color = "var(--chrome-blue)",
   totalTime,
 }) => {
   const actualTotalTime = totalTime || remainingTime;
@@ -54,44 +55,45 @@ const CountdownView: React.FC<CountdownViewProps> = ({
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="flex flex-col w-full p-4 items-center justify-center"
-      tabIndex={0}
-      aria-label="Countdown in progress"
-      role="region"
-    >
-      <h2 className="font-medium text-base mb-1 text-gray-600">
-        Counting down
-      </h2>
+    <ChromeLayout title="Countdown in Progress">
       <div
-        className="font-bold mb-4 text-5xl"
-        style={{ color }}
-        aria-live="polite"
-      >
-        {formatTime(remainingTime)}
-      </div>
-      <div
-        className="rounded-full max-w-xs h-3 mb-4 w-full"
-        style={{ backgroundColor: `${color}15` }}
+        ref={containerRef}
+        className="flex flex-col items-center justify-center py-6 w-full"
+        tabIndex={0}
+        aria-label="Countdown in progress"
+        role="region"
       >
         <div
-          className="rounded-full h-3 transition-all ease-linear duration-1000"
-          style={{
-            backgroundColor: color,
-            width: `${progressPercentage}%`,
-          }}
-        ></div>
+          className="font-bold mb-6 text-4xl"
+          style={{ color }}
+          aria-live="polite"
+        >
+          {formatTime(remainingTime)}
+        </div>
+
+        <div
+          className="rounded-full h-2 mb-8 w-full max-w-full"
+          style={{ backgroundColor: "#e8f0fe" }}
+        >
+          <div
+            className="rounded-full h-2 transition-all ease-linear duration-1000"
+            style={{
+              backgroundColor: color,
+              width: `${progressPercentage}%`,
+            }}
+          ></div>
+        </div>
+
+        <button
+          className="chrome-button chrome-button-danger"
+          onClick={onCancel}
+          tabIndex={0}
+          aria-label="Cancel countdown"
+        >
+          Cancel
+        </button>
       </div>
-      <button
-        className="btn"
-        onClick={onCancel}
-        tabIndex={0}
-        aria-label="Cancel countdown"
-      >
-        Cancel
-      </button>
-    </div>
+    </ChromeLayout>
   );
 };
 
