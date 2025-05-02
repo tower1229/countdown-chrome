@@ -20,13 +20,7 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "permissions": [
-    "storage",
-    "alarms",
-    "notifications",
-    "activeTab",
-    "offscreen"
-  ],
+  "permissions": ["storage", "notifications", "activeTab", "offscreen"],
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
