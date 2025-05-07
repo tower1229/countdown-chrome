@@ -22,6 +22,11 @@ export interface CustomTimer {
   order: number;
 }
 
+export interface SyncData {
+  timers: CustomTimer[];
+  lastUpdated: number; // Timestamp when the timer list was last updated
+}
+
 export type Route = "timer-list" | "timer-edit";
 
 export interface AppState {

@@ -69,13 +69,23 @@ export const getCustomTimers = (): Promise<CustomTimer[]> => {
 
 /**
  * Save all custom timers
+ * @param timers The array of timers to save
+ * @param triggerSync Whether to trigger cloud sync after saving, defaults to true
  */
-export const saveCustomTimers = (timers: CustomTimer[]): Promise<void> => {
+export const saveCustomTimers = (timers: CustomTimer[], triggerSync: boolean = true): Promise<void> => {
   return new Promise((resolve) => {
     chrome.storage.local.set({ customTimers: timers }, () => {
-      triggerCloudSync().catch((err) =>
-        console.error("Cloud sync error:", err)
-      );
+      // 当保存定时器数据时，也更新本地的lastUpdated时间戳
+      if (triggerSync) {
+        // 更新最后修改时间
+        const now = Date.now();
+        chrome.storage.local.set({ lastUpdated: now });
+        
+        // 触发云端同步
+        triggerCloudSync().catch((err) =>
+          console.error("Cloud sync error:", err)
+        );
+      }
       resolve();
     });
   });
