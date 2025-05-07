@@ -37,7 +37,7 @@ const TimerItem: React.FC<TimerItemProps> = ({
       <div className="cursor-grab flex flex-1 items-center overflow-hidden">
         <div className="mr-3 flex-shrink-0">
           <div
-            className="w-7 h-7 rounded-full flex items-center justify-center opacity-70"
+            className="w-6 h-6 rounded-full flex items-center justify-center opacity-70"
             style={{ backgroundColor: color }}
           >
             <svg
@@ -68,7 +68,7 @@ const TimerItem: React.FC<TimerItemProps> = ({
       <div className="flex space-x-2 items-center flex-shrink-0">
         <button
           onClick={() => onStart(timer)}
-          className="text-base flex items-center justify-center transition-colors cursor-pointer"
+          className="text-base flex items-center justify-center transition-colors cursor-pointer hover:opacity-80"
           aria-label="Start timer"
           style={{ color: "var(--chrome-green)" }}
           title="Start timer"
@@ -89,21 +89,23 @@ const TimerItem: React.FC<TimerItemProps> = ({
         </button>
         <button
           onClick={() => onEdit(timer)}
-          className="text-sm py-1 px-4 rounded-full border border-var(--chrome-blue) cursor-pointer"
+          className="text-xs py-1 font-semibold w-16 rounded-full border border-var(--chrome-blue) cursor-pointer hover:opacity-80"
           aria-label="Edit timer"
           style={{
             color: "var(--chrome-blue)",
           }}
+          title="Edit timer"
         >
           Edit
         </button>
         <button
           onClick={() => onDelete(timer.id)}
-          className="text-sm py-1 px-4 rounded-full border border-var(--chrome-red) cursor-pointer"
+          className="text-xs py-1 font-semibold w-16 rounded-full border border-var(--chrome-red) cursor-pointer hover:opacity-80"
           aria-label="Delete timer"
           style={{
             color: "var(--chrome-red)",
           }}
+          title="Delete timer"
         >
           Delete
         </button>

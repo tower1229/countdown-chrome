@@ -185,13 +185,21 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 16px;
+  padding: 6px 12px;
   font-size: 14px;
   font-weight: 500;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s;
   border: none;
+}
+
+.chrome-button:hover {
+  background-color: var(--chrome-hover-bg);
+}
+
+.chrome-button:active {
+  background-color: var(--chrome-active-bg);
 }
 
 .chrome-button-outline {
@@ -205,6 +213,11 @@ body {
   background-color: var(--chrome-blue);
   color: white;
   cursor: pointer;
+}
+
+.chrome-button-primary:hover {
+  background-color: var(--chrome-blue);
+  opacity: 0.8;
 }
 
 .chrome-button-danger {
@@ -242,8 +255,8 @@ body {
 }
 
 .chrome-number-input button {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -260,11 +273,9 @@ body {
 
 .chrome-number-input input {
   flex: 1;
-  height: 32px;
+  height: 28px;
   text-align: center;
   border: none;
-  border-left: 1px solid var(--chrome-border-color);
-  border-right: 1px solid var(--chrome-border-color);
   font-size: 14px;
   color: var(--chrome-text-color);
   min-width: 0;
@@ -306,8 +317,8 @@ body {
 }
 
 .chrome-timer-item-button {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
