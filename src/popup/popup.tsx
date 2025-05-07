@@ -336,7 +336,7 @@ const Popup: React.FC = () => {
   return (
     <div
       ref={rootRef}
-      className="flex flex-col mx-auto min-h-screen pb-2 rounded-lg overflow-hidden"
+      className="flex flex-col mx-auto min-h-screen pb-4 rounded-lg overflow-hidden"
       style={{ width: "360px" }}
     >
       {!isLoading && (

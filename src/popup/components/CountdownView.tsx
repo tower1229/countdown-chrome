@@ -64,7 +64,7 @@ const CountdownView: React.FC<CountdownViewProps> = ({
         role="region"
       >
         <div
-          className="font-bold mb-6 text-4xl"
+          className="font-bold my-6 text-4xl"
           style={{ color }}
           aria-live="polite"
         >

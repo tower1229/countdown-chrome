@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "New Countdown Timer",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Powerful browser countdown timer",
   "action": {
     "default_popup": "src/popup/popup.html",
@@ -20,33 +20,17 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "permissions": [
-    "storage",
-    "notifications",
-    "activeTab",
-    "offscreen"
-  ],
+  "permissions": ["storage", "notifications", "activeTab", "offscreen"],
   "content_scripts": [
     {
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js": [
-        "src/content/playSound.ts"
-      ]
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["src/content/playSound.ts"]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": [
-        "sounds/*",
-        "icons/*"
-      ],
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ]
+      "resources": ["sounds/*", "icons/*"],
+      "matches": ["http://*/*", "https://*/*"]
     }
   ]
 }
