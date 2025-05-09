@@ -90,7 +90,7 @@ const TimerList: React.FC<TimerListProps> = ({
   }
 
   return (
-    <div className="space-y-2 w-full">
+    <div className="space-y-3 w-full">
       {timers.map((timer, index) => (
         <div
           key={timer.id}

@@ -5,7 +5,7 @@
   --chrome-bg-color: #ffffff;
   --chrome-text-color: #202124;
   --chrome-secondary-text-color: #5f6368;
-  --chrome-border-color: #dadce0;
+  --chrome-border-color: #f2f2f2;
   --chrome-blue: #1a73e8;
   --chrome-green: #1e8e3e;
   --chrome-red: #d93025;
@@ -63,14 +63,15 @@ body {
 .chrome-header {
   display: flex;
   align-items: center;
-  padding: 16px 20px;
+  padding: 16px;
   border-bottom: var(--chrome-panel-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .chrome-back-button {
   background: transparent;
   border: none;
-  padding: 8px;
+  padding: 6px;
   margin-right: 12px;
   cursor: pointer;
   color: var(--chrome-text-color);
@@ -90,6 +91,7 @@ body {
   font-weight: 500;
   color: var(--chrome-text-color);
   flex: 1;
+  line-height: 32px;
 }
 
 .chrome-header-icon {
