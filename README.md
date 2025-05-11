@@ -42,8 +42,9 @@
 
 ### 方式一：从应用商店安装（推荐）
 
-- **[Chrome 应用商店链接 - 即将发布](#)** _(链接将在发布后更新)_
-- **[EDGE 应用商店链接 - 即将发布]（#）** _(链接将在发布后更新)_
+- **[Chrome 应用商店链接](https://chromewebstore.google.com/detail/new-countdown-timer/bidfonlkphldhabglikfailiocajegmn?authuser=0&hl=zh-CN)**
+
+- **[EDGE 应用商店链接](https://microsoftedge.microsoft.com/addons/detail/new-countdown-timer/inneoamppnbnoddhjapeeecilobndfpp)**
 
 ### 方式二：手动安装（适用于开发者）
 
